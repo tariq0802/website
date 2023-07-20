@@ -1,0 +1,212 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model User {
+  id            String        @id @default(cuid())
+  name          String?
+  email         String?       @unique
+  emailVerified DateTime?
+  password      String?
+  image         String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  role          Role          @default(USER)
+  accounts      Account[]
+  sessions      Session[]
+  articles      Article[]
+  comments      Comment[]
+  likes         Like[]
+  commentLikes  CommentLike[]
+}
+
+model Article {
+  id            String       @id @default(cuid())
+  title         String
+  slug          String       @unique
+  description   String?
+  image         String?      @db.Text
+  content       Json?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  authorId      String
+  Author        User         @relation(fields: [userId], references: [id])
+  userId        String
+  category      Category     @relation(fields: [categoryId], references: [id])
+  categoryId    String
+  case          Case?        @relation(fields: [caseId], references: [id])
+  caseId        String?
+  recruitment   Recruitment? @relation(fields: [recruitmentId], references: [id])
+  recruitmentId String?
+  tags          Tag[]
+  comments      Comment[]
+  likes         Like[]
+
+  @@index([userId])
+  @@index([categoryId])
+  @@index([caseId])
+  @@index([recruitmentId])
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  label       String
+  slug        String    @unique
+  description String?
+  image       String?   @db.Text
+  articles    Article[]
+}
+
+model Tag {
+  id          String    @id @default(cuid())
+  label       String
+  slug        String    @unique
+  description String?
+  articles    Article[]
+}
+
+model Case {
+  id             String       @id @default(cuid())
+  title          String
+  description    String?
+  caseNo         String
+  petitioner     String
+  respondent     String
+  casefile       String?
+  caseCategory   CaseCategory @relation(fields: [caseCategoryId], references: [id])
+  caseCategoryId String
+  caseOrders     CaseOrder[]
+  articles       Article[]
+
+  @@index([caseCategoryId])
+}
+
+model CaseOrder {
+  id        String   @id @default(cuid())
+  order     String
+  orderDate DateTime
+  case      Case?    @relation(fields: [caseId], references: [id])
+  caseId    String?
+
+  @@index([caseId])
+}
+
+model CaseCategory {
+  id          String  @id @default(cuid())
+  label       String
+  slug        String  @unique
+  description String?
+  cases       Case[]
+}
+
+model Recruitment {
+  id                 String           @id @default(cuid())
+  title              String
+  slug               String           @unique
+  description        String?
+  vacancy            String?
+  lastDate           DateTime?
+  salary             String?
+  qualification      String?
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  recruitmentBoard   RecruitmentBoard @relation(fields: [recruitmentBoardId], references: [id])
+  recruitmentBoardId String
+  articles           Article[]
+
+  @@index([recruitmentBoardId])
+}
+
+model RecruitmentBoard {
+  id           String        @id @default(cuid())
+  label        String
+  slug         String        @unique
+  description  String?
+  website      String?
+  recruitments Recruitment[]
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  text      String
+  createdAt DateTime @default(now())
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+  article   Article  @relation(fields: [articleId], references: [id])
+  articleId String
+
+  replyToId String?
+  replyTo   Comment?      @relation("replyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies   Comment[]     @relation("replyTo")
+  likes     CommentLike[]
+  commentId String?
+
+  @@index([authorId])
+  @@index([replyToId])
+  @@index([articleId])
+}
+
+model Like {
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String
+  article   Article @relation(fields: [articleId], references: [id])
+  articleId String
+
+  @@id([userId])
+  @@index([userId])
+  @@index([articleId])
+}
+
+model CommentLike {
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String
+  comment   Comment @relation(fields: [commentId], references: [id])
+  commentId String
+
+  @@id([userId, commentId])
+  @@index([userId])
+  @@index([commentId])
+}
+
+enum Role {
+  USER
+  ADMIN
+  AUTHOR
+  MEMBER
+}
