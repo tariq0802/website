@@ -5,7 +5,6 @@ import axios from "axios";
 import { ImagePlus } from "lucide-react";
 import { useState } from "react";
 import MyImage from "./image";
-import { useRouter } from "next/navigation";
 
 interface ImageUploadProps {
   onChange: (file: string) => void;
@@ -19,10 +18,13 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [src, setSrc] = useState(existingImage || "");
 
+  console.log("src: ", src);
+
   const handleFileUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = event.target.files?.[0];
+    console.log("file: ", file);
 
     if (file) {
       setIsLoading(true);
@@ -33,7 +35,10 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         const response = await axios.post("/api/upload", formData);
         const data = await response.data;
 
-        const imageUrl = `${data.data.signedUrlPut}`;
+        const imageUrl = `${data.data.signedUrl}`;
+
+        onChange(data.data.fileName);
+        setSrc(imageUrl);
 
         const signedUrlResponse = await axios.put(imageUrl, file, {
           headers: {
@@ -42,8 +47,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         });
 
         if (signedUrlResponse.status === 200) {
-          setSrc(data.data.fileName);
-          onChange(data.data.fileName);
           toast({
             title: "Success !!!",
             description: "Image uploaded successfully.",

@@ -4,27 +4,26 @@ import { DataTable } from "@/components/data-table";
 import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Tag } from "@prisma/client";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { CategoryColumn, columns } from "./columns";
+import { columns } from "./columns";
 
-interface categoriesClientProps {
-  data: CategoryColumn[];
+interface TagsClientProps {
+  data: Tag[];
 }
 
-const CategoriesClient: React.FC<categoriesClientProps> = ({ data }) => {
+const TagsClient: React.FC<TagsClientProps> = ({ data }) => {
   const router = useRouter();
 
-  console.log(data);
-  
   return (
     <>
       <div className="flex items-center justify-between">
         <Heading
-          title={`Categories: ${data.length}`}
-          description="Manage categories for your store"
+          title={`Tags: ${data.length}`}
+          description="Manage Tags here..."
         />
-        <Button onClick={() => router.push(`/dashboard/categories/new`)}>
+        <Button onClick={() => router.push(`/dashboard/tags/new`)}>
           <Plus className="mr-2 h-4 w-4" /> Add New
         </Button>
       </div>
@@ -35,5 +34,4 @@ const CategoriesClient: React.FC<categoriesClientProps> = ({ data }) => {
     </>
   );
 };
-
-export default CategoriesClient;
+export default TagsClient;

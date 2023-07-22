@@ -1,5 +1,6 @@
 "use client";
 
+import { Tag } from "@prisma/client";
 import { AlertModal } from "@/components/alert-modal";
 import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
@@ -15,7 +16,6 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Category } from "@prisma/client";
 import axios from "axios";
 import { Trash } from "lucide-react";
 import { useParams, usePathname, useRouter } from "next/navigation";
@@ -24,32 +24,29 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import slugify from "slugify";
 import { Textarea } from "@/components/ui/textarea";
-import ImageUpload from "@/components/image-upload";
 import { useMutation } from "@tanstack/react-query";
 
 const formSchema = z.object({
   label: z.string().min(2),
   slug: z.string().min(2),
-  image: z.string().nullable(),
   description: z.string().nullable(),
 });
 
-type CategoryFormValues = z.infer<typeof formSchema>;
+type TagFormValues = z.infer<typeof formSchema>;
 
-interface CategoryFormProps {
-  initialData: Category | null;
+interface TagFormProps {
+  initialData: Tag | null;
 }
 
-export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
+const TagForm: React.FC<TagFormProps> = ({ initialData }) => {
   const params = useParams();
   const router = useRouter();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [imageSrc, setImageSrc] = useState(initialData?.image || "");
 
-  const title = initialData ? "Edit category" : "Create category";
-  const description = initialData ? "Edit a category." : "Add a new category";
-  const toastMessage = initialData ? "Category updated." : "Category created.";
+  const title = initialData ? "Edit tag" : "Create tag";
+  const description = initialData ? "Edit this tag." : "Add a new tag";
+  const toastMessage = initialData ? "Tag updated." : "Tag created.";
   const action = initialData ? "Save changes" : "Create";
 
   const defaultValues = initialData
@@ -57,11 +54,10 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
     : {
         label: "",
         slug: "",
-        image: "",
         description: "",
       };
 
-  const form = useForm<CategoryFormValues>({
+  const form = useForm<TagFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues,
   });
@@ -71,19 +67,18 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
   useEffect(() => {
     const slugifiedLabel = slugify(label, { lower: true });
     form.setValue("slug", slugifiedLabel);
-    form.setValue("image", imageSrc);
-  }, [label, form, imageSrc]);
+  }, [label, form]);
 
-  const { mutate: categoryMutation, isLoading } = useMutation({
-    mutationFn: async (payload: CategoryFormValues) => {
+  const { mutate: tagMutation, isLoading } = useMutation({
+    mutationFn: async (payload: TagFormValues) => {
       if (initialData) {
         const { data } = await axios.patch(
-          `/api/categories/${params.categorySlug}`,
+          `/api/tags/${params.tagSlug}`,
           payload
         );
         return data;
       } else {
-        const { data } = await axios.post(`/api/categories`, payload);
+        const { data } = await axios.post(`/api/tags`, payload);
         return data;
       }
     },
@@ -97,26 +92,26 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
     },
   });
 
-  const { mutate: deleteCategory, isLoading: loading } = useMutation({
+  const {mutate: deleteTag, isLoading: loading} = useMutation({
     mutationFn: async () => {
-      await axios.delete(`/api/categories/${params.categorySlug}`);
+        await axios.delete(`/api/tags/${params.tagSlug}`)
     },
     onSuccess: () => {
-      router.push("/dashboard/categories");
-      router.refresh();
-      return toast({ title: "Tag deleted" });
+        router.push("/dashboard/tags");
+        router.refresh();
+        return toast({ title: "Tag deleted" });
     },
     onError: (err: any) => {
       return toast({ title: "Something went wrong.", variant: "destructive" });
     },
-  });
+  })
 
   return (
     <div>
       <AlertModal
         isOpen={open}
         onClose={() => setOpen(false)}
-        onConfirm={deleteCategory}
+        onConfirm={deleteTag}
         loading={loading}
       />
 
@@ -138,22 +133,10 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
 
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit((e) => categoryMutation(e))}
+          onSubmit={form.handleSubmit((e) => tagMutation(e))}
           className="space-y-8 w-full"
         >
           <div className="flex flex-col gap-4">
-            <FormItem className="md:grid md:grid-cols-4 gap-6">
-              <FormLabel className="md:col-span-1 text-end pt-4">
-                Image
-              </FormLabel>
-              <div className="md:col-span-3">
-                <ImageUpload
-                  onChange={(src: string) => setImageSrc(src)}
-                  existingImage={initialData?.image || undefined}
-                />
-              </div>
-            </FormItem>
-
             <FormField
               control={form.control}
               name="label"
@@ -165,7 +148,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
                   <FormControl className="md:col-span-3">
                     <Input
                       disabled={loading}
-                      placeholder="Category name"
+                      placeholder="Tag name"
                       {...field}
                     />
                   </FormControl>
@@ -173,6 +156,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="description"
@@ -184,7 +168,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
                   <FormControl className="md:col-span-3">
                     <Textarea
                       disabled={loading}
-                      placeholder="Description of this category"
+                      placeholder="Description of this tag"
                       value={field.value ?? ""}
                       onChange={field.onChange}
                       onBlur={field.onBlur}
@@ -205,3 +189,4 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
     </div>
   );
 };
+export default TagForm;

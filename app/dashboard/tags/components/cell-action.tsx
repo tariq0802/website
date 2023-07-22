@@ -1,5 +1,7 @@
 "use client";
 
+import { Tag } from "@prisma/client";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,25 +9,23 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { CategoryColumn } from "./columns";
-import { Button } from "@/components/ui/button";
+import { AlertModal } from "@/components/alert-modal";
 import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "@/hooks/use-toast";
-import { AlertModal } from "@/components/alert-modal";
-import { useMutation } from "@tanstack/react-query";
 
 interface CellActionProps {
-  data: CategoryColumn;
+  data: Tag;
 }
 
-export const CellAction: React.FC<CellActionProps> = ({ data }) => {
+const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
 
-  const { mutate: deleteCategory, isLoading: loading } = useMutation({
+  const { mutate: deleteTag, isLoading: loading } = useMutation({
     mutationFn: async () => {
       await axios.delete(`/api/tags/${data.slug}`);
     },
@@ -34,7 +34,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
       router.refresh();
       return toast({
         title: "Success!!!",
-        description: "Category deleted.",
+        description: "Tag deleted.",
         variant: "default",
       });
     },
@@ -52,7 +52,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
     navigator.clipboard.writeText(id);
     toast({
       title: "Success!!!",
-      description: "Category ID copied to clipboard.",
+      description: "Tag ID copied to clipboard.",
       variant: "default",
     });
   };
@@ -62,7 +62,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
       <AlertModal
         isOpen={open}
         onClose={() => setOpen(false)}
-        onConfirm={deleteCategory}
+        onConfirm={deleteTag}
         loading={loading}
       />
       <DropdownMenu>
@@ -78,7 +78,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
             <Copy className="mr-2 h-4 w-4" /> Copy Id
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => router.push(`/dashboard/categories/${data.slug}`)}
+            onClick={() => router.push(`/dashboard/tags/${data.slug}`)}
           >
             <Edit className="mr-2 h-4 w-4" /> Update
           </DropdownMenuItem>
@@ -90,3 +90,4 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
     </>
   );
 };
+export default CellAction;

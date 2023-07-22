@@ -89,26 +89,31 @@ model Category {
   label       String
   slug        String    @unique
   description String?
+  createdAt   DateTime  @default(now())
   image       String?   @db.Text
   articles    Article[]
 }
 
 model Tag {
-  id          String    @id @default(cuid())
+  id          String   @id @default(cuid())
   label       String
-  slug        String    @unique
+  slug        String   @unique
   description String?
-  articles    Article[]
+  createdAt   DateTime @default(now())
+
+  articles Article[]
 }
 
 model Case {
-  id             String       @id @default(cuid())
-  title          String
-  description    String?
-  caseNo         String
-  petitioner     String
-  respondent     String
-  casefile       String?
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  caseNo      String
+  petitioner  String
+  respondent  String
+  casefile    String?
+  createdAt   DateTime @default(now())
+
   caseCategory   CaseCategory @relation(fields: [caseCategoryId], references: [id])
   caseCategoryId String
   caseOrders     CaseOrder[]
@@ -123,16 +128,19 @@ model CaseOrder {
   orderDate DateTime
   case      Case?    @relation(fields: [caseId], references: [id])
   caseId    String?
+  createdAt DateTime @default(now())
 
   @@index([caseId])
 }
 
 model CaseCategory {
-  id          String  @id @default(cuid())
+  id          String   @id @default(cuid())
   label       String
-  slug        String  @unique
+  slug        String   @unique
   description String?
-  cases       Case[]
+  createdAt   DateTime @default(now())
+
+  cases Case[]
 }
 
 model Recruitment {
@@ -154,11 +162,13 @@ model Recruitment {
 }
 
 model RecruitmentBoard {
-  id           String        @id @default(cuid())
-  label        String
-  slug         String        @unique
-  description  String?
-  website      String?
+  id          String   @id @default(cuid())
+  label       String
+  slug        String   @unique
+  description String?
+  website     String?
+  createdAt   DateTime @default(now())
+
   recruitments Recruitment[]
 }
 

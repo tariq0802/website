@@ -1,3 +1,4 @@
+
 import { db } from "@/lib/db";
 import CategoriesClient from "./components/client";
 
@@ -7,6 +8,9 @@ const CategoriesPage = async () => {
       label: "asc",
     },
   });
+
+  
+
 
   return (
     <div className="flex-col">

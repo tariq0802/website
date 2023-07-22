@@ -2,34 +2,33 @@ import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 interface Iparams {
-  categorySlug: string;
+  tagSlug: string;
 }
 
 export async function DELETE(
   request: Request,
   { params }: { params: Iparams }
 ) {
-  const { categorySlug } = params;
-  const res = await db.category.delete({
+  const { tagSlug } = params;
+  const res = await db.tag.delete({
     where: {
-      slug: categorySlug,
+      slug: tagSlug,
     },
   });
   return NextResponse.json(res);
 }
 
 export async function PATCH(request: Request, { params }: { params: Iparams }) {
-  const { categorySlug } = params;
+  const { tagSlug } = params;
   const body = await request.json();
-  const { label, slug, image, description } = body;
-  const update = await db.category.update({
+  const { label, slug, description } = body;
+  const update = await db.tag.update({
     where: {
-      slug: categorySlug,
+      slug: tagSlug,
     },
     data: {
       label,
       slug,
-      image,
       description,
     },
   });

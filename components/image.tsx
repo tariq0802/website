@@ -1,9 +1,8 @@
 "use client";
 
-import { Client } from "@/lib/client";
-import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import axios from "axios";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface imageProps {
@@ -18,15 +17,15 @@ const MyImage: React.FC<imageProps> = ({ src, alt, fill, height, width }) => {
   const [url, setUrl] = useState<string>();
 
   useEffect(() => {
-    const fetchCommand = new GetObjectCommand({
-      Bucket: "cgwebsite",
-      Key: src,
-    });
-    const fetchNewSrc = async () => {
-      const preSignedFetchUrl = await getSignedUrl(Client, fetchCommand);
-      setUrl(preSignedFetchUrl);
+    const fetchSignedUrl = async () => {
+      try {
+        const response = await axios.get(`/api/upload?key=${src}`);
+        setUrl(response.data.data);
+      } catch (error) {
+        console.error("Error fetching signed URL:", error);
+      }
     };
-    fetchNewSrc();
+    fetchSignedUrl();
   }, [src]);
 
   return (
