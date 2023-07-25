@@ -55,6 +55,11 @@ const components: { title: string; href: string; description: string }[] = [
     description: "Description",
   },
   {
+    title: "Case Orders",
+    href: "/dashboard/case-orders",
+    description: "Description",
+  },
+  {
     title: "Articles",
     href: "/dashboard/articles",
     description: "Description",

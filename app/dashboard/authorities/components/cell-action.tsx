@@ -1,5 +1,7 @@
 "use client";
 
+import { RecruitmentBoard } from "@prisma/client";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,23 +9,20 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { CategoryColumn } from "./columns";
-import { Button } from "@/components/ui/button";
+import { AlertModal } from "@/components/alert-modal";
 import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
-import { AlertModal } from "@/components/alert-modal";
 import useDeleteMutation from "@/hooks/use-delete-mutation";
 
 interface CellActionProps {
-  data: CategoryColumn;
+  data: RecruitmentBoard;
 }
 
-export const CellAction: React.FC<CellActionProps> = ({ data }) => {
+const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const router = useRouter();
-
-  const deleteLink = `/api/categories/${data?.slug}`;
-  const refresh = "/dashboard/categories";
+  const deleteLink = `/api/authorities/${data?.slug}`;
+  const refresh = "/dashboard/authorities";
 
   const { deleteMutation, loading, open, setOpen } = useDeleteMutation(
     deleteLink,
@@ -34,7 +33,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
     navigator.clipboard.writeText(id);
     toast({
       title: "Success!!!",
-      description: "Category ID copied to clipboard.",
+      description: "Authority ID copied to clipboard.",
       variant: "default",
     });
   };
@@ -60,7 +59,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
             <Copy className="mr-2 h-4 w-4" /> Copy Id
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => router.push(`/dashboard/categories/${data.slug}`)}
+            onClick={() => router.push(`/dashboard/authorities/${data.slug}`)}
           >
             <Edit className="mr-2 h-4 w-4" /> Update
           </DropdownMenuItem>
@@ -72,3 +71,4 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
     </>
   );
 };
+export default CellAction;

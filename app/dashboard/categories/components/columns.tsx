@@ -2,13 +2,14 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
-import Image from "next/image";
 import MyImage from "@/components/image";
+import { formatTimeToNow } from "@/lib/utils";
 
 export type CategoryColumn = {
   id: string;
   slug: string;
   label: string;
+  createdAt: Date;
   image: string | null;
   description: string | null;
 };
@@ -28,6 +29,11 @@ export const columns: ColumnDef<CategoryColumn>[] = [
   {
     accessorKey: "label",
     header: "Label",
+  },
+  {
+    accessorKey: "createdAt",
+    header: "Created",
+    cell: (info) => formatTimeToNow(info.row.original.createdAt),
   },
   {
     accessorKey: "description",

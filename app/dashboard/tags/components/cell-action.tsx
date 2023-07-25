@@ -12,10 +12,8 @@ import {
 import { AlertModal } from "@/components/alert-modal";
 import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { toast } from "@/hooks/use-toast";
+import useDeleteMutation from "@/hooks/use-delete-mutation";
 
 interface CellActionProps {
   data: Tag;
@@ -23,30 +21,13 @@ interface CellActionProps {
 
 const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const router = useRouter();
-  const [open, setOpen] = useState(false);
+  const deleteLink = `/api/tags/${data?.slug}`;
+  const refresh = "/dashboard/tags";
 
-  const { mutate: deleteTag, isLoading: loading } = useMutation({
-    mutationFn: async () => {
-      await axios.delete(`/api/tags/${data.slug}`);
-    },
-    onSuccess: () => {
-      router.push("/dashboard/tags");
-      router.refresh();
-      return toast({
-        title: "Success!!!",
-        description: "Tag deleted.",
-        variant: "default",
-      });
-    },
-    onError: (err: any) => {
-      return toast({
-        title: "Something went wrong",
-        description:
-          "Make sure you removed all products using this category first.",
-        variant: "destructive",
-      });
-    },
-  });
+  const { deleteMutation, loading, open, setOpen } = useDeleteMutation(
+    deleteLink,
+    refresh
+  );
 
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(id);
@@ -62,7 +43,7 @@ const CellAction: React.FC<CellActionProps> = ({ data }) => {
       <AlertModal
         isOpen={open}
         onClose={() => setOpen(false)}
-        onConfirm={deleteTag}
+        onConfirm={deleteMutation}
         loading={loading}
       />
       <DropdownMenu>

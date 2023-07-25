@@ -4,9 +4,9 @@ import { DataTable } from "@/components/data-table";
 import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Tag } from "@prisma/client";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { Tag } from "@prisma/client";
 import { columns } from "./columns";
 
 interface TagsClientProps {

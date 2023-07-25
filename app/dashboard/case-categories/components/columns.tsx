@@ -2,10 +2,10 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { formatTimeToNow } from "@/lib/utils";
-import { Tag } from "@prisma/client";
+import { CaseCategory } from "@prisma/client";
 import CellAction from "./cell-action";
 
-export const columns: ColumnDef<Tag>[] = [
+export const columns: ColumnDef<CaseCategory>[] = [
   {
     accessorKey: "label",
     header: "Label",

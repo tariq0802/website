@@ -6,32 +6,31 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { CategoryColumn, columns } from "./columns";
+import { CaseColumn, columns } from "./column";
 
-interface categoriesClientProps {
-  data: CategoryColumn[];
+interface CasesClientProps {
+  data: CaseColumn[];
 }
 
-const CategoriesClient: React.FC<categoriesClientProps> = ({ data }) => {
+const CasesClient: React.FC<CasesClientProps> = ({ data }) => {
   const router = useRouter();
 
   return (
     <>
       <div className="flex items-center justify-between">
         <Heading
-          title={`Categories: ${data.length}`}
-          description="Manage categories for your store"
+          title={`Cases: ${data.length}`}
+          description="Manage Cases here..."
         />
-        <Button onClick={() => router.push(`/dashboard/categories/new`)}>
+        <Button onClick={() => router.push(`/dashboard/cases/new`)}>
           <Plus className="mr-2 h-4 w-4" /> Add New
         </Button>
       </div>
 
       <Separator />
 
-      <DataTable searchKey="label" columns={columns} data={data} />
+      <DataTable searchKey="title" columns={columns} data={data} />
     </>
   );
 };
-
-export default CategoriesClient;
+export default CasesClient;

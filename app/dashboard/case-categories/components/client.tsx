@@ -6,23 +6,24 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { CategoryColumn, columns } from "./columns";
+import { CaseCategory } from "@prisma/client";
+import { columns } from "./columns";
 
-interface categoriesClientProps {
-  data: CategoryColumn[];
+interface CaseCategoriesClientProps {
+  data: CaseCategory[];
 }
 
-const CategoriesClient: React.FC<categoriesClientProps> = ({ data }) => {
+const CaseCategoriesClient: React.FC<CaseCategoriesClientProps> = ({ data }) => {
   const router = useRouter();
 
   return (
     <>
       <div className="flex items-center justify-between">
         <Heading
-          title={`Categories: ${data.length}`}
-          description="Manage categories for your store"
+          title={`Case categories: ${data.length}`}
+          description="Manage Case categories here..."
         />
-        <Button onClick={() => router.push(`/dashboard/categories/new`)}>
+        <Button onClick={() => router.push(`/dashboard/case-categories/new`)}>
           <Plus className="mr-2 h-4 w-4" /> Add New
         </Button>
       </div>
@@ -33,5 +34,4 @@ const CategoriesClient: React.FC<categoriesClientProps> = ({ data }) => {
     </>
   );
 };
-
-export default CategoriesClient;
+export default CaseCategoriesClient;

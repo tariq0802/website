@@ -25,7 +25,9 @@ const MyImage: React.FC<imageProps> = ({ src, alt, fill, height, width }) => {
         console.error("Error fetching signed URL:", error);
       }
     };
-    fetchSignedUrl();
+    if (src) {
+      fetchSignedUrl();
+    }
   }, [src]);
 
   return (

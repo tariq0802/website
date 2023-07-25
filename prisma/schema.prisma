@@ -107,6 +107,7 @@ model Tag {
 model Case {
   id          String   @id @default(cuid())
   title       String
+  slug        String   @unique
   description String?
   caseNo      String
   petitioner  String
@@ -124,6 +125,7 @@ model Case {
 
 model CaseOrder {
   id        String   @id @default(cuid())
+  label     String
   order     String
   orderDate DateTime
   case      Case?    @relation(fields: [caseId], references: [id])

@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import TagForm from "./components/tag-form";
+import TagForm from "../components/tag-form";
 
 const TagPage = async ({ params }: { params: { tagSlug: string } }) => {
   const tag = await db.tag.findFirst({
