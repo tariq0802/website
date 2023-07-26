@@ -35,7 +35,7 @@ const Select = <T extends FieldValues>({
   const [open, setOpen] = useState(false);
 
   return (
-    <div>
+    <>
       <FormField
         control={form.control}
         name={name}
@@ -100,7 +100,7 @@ const Select = <T extends FieldValues>({
           </FormItem>
         )}
       />
-    </div>
+    </>
   );
 };
 export default Select;

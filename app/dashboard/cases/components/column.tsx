@@ -8,7 +8,7 @@ export type CaseColumn = {
   title: string;
   slug: string;
   description: string | null;
-  caseNo: string;
+  label: string;
   petitioner: string;
   respondent: string;
   casefile: string | null;
