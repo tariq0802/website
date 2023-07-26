@@ -1,6 +1,6 @@
 "use client";
 
-import { Case, CaseCategory } from "@prisma/client";
+import { Recruitment, RecruitmentBoard } from "@prisma/client";
 import { AlertModal } from "@/components/alert-modal";
 import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
@@ -12,74 +12,74 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import slugify from "slugify";
-import Select from "@/components/select";
 import Input from "@/components/input";
-import TextArea from "@/components/text-area";
 import useFormMutation from "@/hooks/use-form-mutation";
 import useDeleteMutation from "@/hooks/use-delete-mutation";
+import Select from "@/components/select";
+import DateInput from "@/components/date-input";
+import TextArea from "@/components/text-area";
 
 const formSchema = z.object({
-  title: z.string(),
-  slug: z.string(),
-  description: z.string().nullable(),
   label: z.string().min(2),
-  petitioner: z.string().min(2),
-  respondent: z.string().min(2),
-  casefile: z.string().nullable(),
-  caseCategoryId: z.string().min(2),
+  slug: z.string().min(2),
+  vacancy: z.string().nullable(),
+  salary: z.string().nullable(),
+  lastDate: z.date().nullable(),
+  description: z.string().nullable(),
+  qualification: z.string().nullable(),
+  recruitmentBoardId: z.string(),
 });
 
-type CaseFormValues = z.infer<typeof formSchema>;
+type RecruitmentFormValues = z.infer<typeof formSchema>;
 
-interface CaseFormProps {
-  initialData: Case | null;
-  caseCategories: CaseCategory[];
+interface RecruitmentFormProps {
+  initialData: Recruitment | null;
+  authorities: RecruitmentBoard[];
 }
 
-const CaseForm: React.FC<CaseFormProps> = ({ initialData, caseCategories }) => {
-  const formTitle = initialData ? "Edit case" : "Create case";
-  const formDescription = initialData ? "Edit this case." : "Add a new case";
+const RecruitmentForm: React.FC<RecruitmentFormProps> = ({
+  initialData,
+  authorities,
+}) => {
+  const formTitle = initialData ? "Edit recruitment" : "Create recruitment";
+  const formDescription = initialData
+    ? "Edit this recruitment."
+    : "Add a new recruitment";
   const action = initialData ? "Save changes" : "Create";
 
   const defaultValues = initialData
     ? { ...initialData }
     : {
-        title: "",
-        slug: "",
-        description: "",
         label: "",
-        petitioner: "",
-        respondent: "",
-        casefile: "",
-        caseCategoryId: "",
+        slug: "",
+        vacancy: "",
+        salary: "",
+        lastDate: undefined,
+        description: "",
+        qualification: "",
+        recruitmentBoardId: "",
       };
 
-  const form = useForm<CaseFormValues>({
+  const form = useForm<RecruitmentFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues,
   });
 
   const label = form.watch("label");
-  const petitioner = form.watch("petitioner");
-  const respondent = form.watch("respondent");
-  const title = form.watch("title");
 
   useEffect(() => {
-    const slugifiedTitle = slugify(title, { lower: true });
-    const causeTitle = `${label} - ${petitioner} vs ${respondent}`;
-    form.setValue("title", causeTitle);
-    form.setValue("slug", slugifiedTitle);
-  }, [label, form, petitioner, respondent, title]);
+    const slugifiedLabel = slugify(label, { lower: true });
+    form.setValue("slug", slugifiedLabel);
+  }, [form, label]);
 
-  const link = "/api/cases";
-  const deleteLink = `/api/cases/${initialData?.slug}`;
-  const refresh = "/dashboard/cases";
+  const link = "/api/recruitments";
+  const deleteLink = `/api/recruitments/${initialData?.slug}`;
+  const refresh = "/dashboard/recruitments";
 
-  const { mutate: mutate, isLoading } = useFormMutation<CaseFormValues, Case>(
-    link,
-    initialData,
-    refresh
-  );
+  const { mutate: mutate, isLoading } = useFormMutation<
+    RecruitmentFormValues,
+    Recruitment
+  >(link, initialData, refresh);
 
   const { deleteMutation, loading, open, setOpen } = useDeleteMutation(
     deleteLink,
@@ -113,54 +113,54 @@ const CaseForm: React.FC<CaseFormProps> = ({ initialData, caseCategories }) => {
 
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit((payload: CaseFormValues) =>
+          onSubmit={form.handleSubmit((payload: RecruitmentFormValues) =>
             mutate(payload)
           )}
           className="space-y-8 w-full"
         >
           <div className="flex flex-col gap-4">
+            <Select
+              form={form}
+              label="Authority"
+              name="recruitmentBoardId"
+              data={authorities}
+            />
+            <DateInput form={form} name="lastDate" label="Last date" />
             <Input
               form={form}
               name="label"
-              label="Case No"
+              label="Label"
               disabled={loading}
-              placeholder="Case Number"
+              placeholder="Recruitment title"
             />
             <Input
               form={form}
-              name="petitioner"
-              label="Petitioner Name"
+              name="vacancy"
+              label="Vacancy"
               disabled={loading}
-              placeholder="Name of the petitioner"
+              placeholder="Recruitment vacancies"
             />
             <Input
               form={form}
-              name="respondent"
-              label="Respondent"
+              name="salary"
+              label="Salary"
               disabled={loading}
-              placeholder="Name of the respondent"
+              placeholder="Salary"
             />
             <Input
               form={form}
-              name="casefile"
-              label="Case File"
+              name="qualification"
+              label="Qualification"
               disabled={loading}
-              placeholder="Case file link"
-            />
-            <Select
-              form={form}
-              label="Category"
-              name="caseCategoryId"
-              data={caseCategories}
+              placeholder="Minimum qualification"
             />
             <TextArea
               form={form}
-              name="description"
               label="Description"
+              name="description"
               disabled={loading}
-              placeholder="Description of this case"
+              placeholder="Recruitment description"
             />
-
             <Button disabled={isLoading} className="ml-auto" type="submit">
               {action}
             </Button>
@@ -170,4 +170,4 @@ const CaseForm: React.FC<CaseFormProps> = ({ initialData, caseCategories }) => {
     </div>
   );
 };
-export default CaseForm;
+export default RecruitmentForm;

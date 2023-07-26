@@ -65,9 +65,8 @@ model Article {
   content       Json?
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
+  author        User         @relation(fields: [authorId], references: [id])
   authorId      String
-  Author        User         @relation(fields: [userId], references: [id])
-  userId        String
   category      Category     @relation(fields: [categoryId], references: [id])
   categoryId    String
   case          Case?        @relation(fields: [caseId], references: [id])
@@ -78,7 +77,7 @@ model Article {
   comments      Comment[]
   likes         Like[]
 
-  @@index([userId])
+  @@index([authorId])
   @@index([categoryId])
   @@index([caseId])
   @@index([recruitmentId])
@@ -109,7 +108,7 @@ model Case {
   title       String
   slug        String   @unique
   description String?
-  caseNo      String
+  label       String
   petitioner  String
   respondent  String
   casefile    String?
@@ -126,10 +125,11 @@ model Case {
 model CaseOrder {
   id        String   @id @default(cuid())
   label     String
+  slug      String   @unique
   order     String
   orderDate DateTime
-  case      Case?    @relation(fields: [caseId], references: [id])
-  caseId    String?
+  case      Case     @relation(fields: [caseId], references: [id])
+  caseId    String
   createdAt DateTime @default(now())
 
   @@index([caseId])
@@ -147,7 +147,7 @@ model CaseCategory {
 
 model Recruitment {
   id                 String           @id @default(cuid())
-  title              String
+  label              String
   slug               String           @unique
   description        String?
   vacancy            String?

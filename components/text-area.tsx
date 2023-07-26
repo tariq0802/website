@@ -6,7 +6,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input as UiInput } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 
 interface TextAreaProps<T extends FieldValues> {
@@ -37,7 +36,7 @@ const TextArea = <T extends FieldValues>({
             <FormControl className="md:col-span-3">
               <Textarea
                 disabled={disabled}
-                placeholder="Description of this case"
+                placeholder={placeholder ? placeholder : "Description"}
                 {...field}
               />
             </FormControl>

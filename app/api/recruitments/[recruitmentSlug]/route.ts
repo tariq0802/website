@@ -2,48 +2,48 @@ import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 interface Iparams {
-  caseSlug: string;
+  recruitmentSlug: string;
 }
 
 export async function DELETE(
   request: Request,
   { params }: { params: Iparams }
 ) {
-  const { caseSlug } = params;
-  const res = await db.case.delete({
+  const { recruitmentSlug } = params;
+  const res = await db.recruitment.delete({
     where: {
-      slug: caseSlug,
+      slug: recruitmentSlug,
     },
   });
   return NextResponse.json(res);
 }
 
 export async function PATCH(request: Request, { params }: { params: Iparams }) {
-  const { caseSlug } = params;
+  const { recruitmentSlug } = params;
   const body = await request.json();
   const {
-    title,
+    label,
     slug,
     description,
-    label,
-    petitioner,
-    respondent,
-    caseCategoryId,
-    casefile,
+    vacancy,
+    lastDate,
+    salary,
+    qualification,
+    recruitmentBoardId,
   } = body;
-  const update = await db.case.update({
+  const update = await db.recruitment.update({
     where: {
-      slug: caseSlug,
+      slug: recruitmentSlug,
     },
     data: {
-      title,
+      label,
       slug,
       description,
-      label,
-      petitioner,
-      respondent,
-      caseCategoryId,
-      casefile,
+      vacancy,
+      lastDate,
+      salary,
+      qualification,
+      recruitmentBoardId,
     },
   });
   return NextResponse.json(update);

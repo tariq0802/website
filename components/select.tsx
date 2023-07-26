@@ -1,3 +1,5 @@
+"use client";
+
 import { FieldValues, Path, UseFormReturn } from "react-hook-form";
 import { FormControl, FormField, FormItem, FormLabel } from "./ui/form";
 import {
@@ -15,6 +17,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
+import { useState } from "react";
 
 interface SelectProps<T extends FieldValues> {
   form: UseFormReturn<T>;
@@ -23,7 +26,14 @@ interface SelectProps<T extends FieldValues> {
   data: any[];
 }
 
-const Select = <T extends FieldValues>({ form, name, label, data }: SelectProps<T>) => {
+const Select = <T extends FieldValues>({
+  form,
+  name,
+  label,
+  data,
+}: SelectProps<T>) => {
+  const [open, setOpen] = useState(false);
+
   return (
     <div>
       <FormField
@@ -35,12 +45,13 @@ const Select = <T extends FieldValues>({ form, name, label, data }: SelectProps<
               {label}
             </FormLabel>
 
-            <Popover>
+            <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild>
                 <FormControl className="md:col-span-3">
                   <Button
                     variant="outline"
                     role="combobox"
+                    aria-expanded={open}
                     className={cn(
                       "w-[200px] justify-between",
                       !field.value && "text-muted-foreground"
@@ -48,7 +59,7 @@ const Select = <T extends FieldValues>({ form, name, label, data }: SelectProps<
                   >
                     {field.value
                       ? data.find((item) => item.id === field.value)?.label
-                      : "Select category"}
+                      : "Select"}
                     <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </FormControl>
@@ -68,6 +79,7 @@ const Select = <T extends FieldValues>({ form, name, label, data }: SelectProps<
                         key={item.id}
                         onSelect={(value) => {
                           form.setValue(name, item.id);
+                          setOpen(false);
                         }}
                       >
                         {item.label}
