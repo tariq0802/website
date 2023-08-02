@@ -12,7 +12,7 @@ interface UseDeleteMutationOptions {
 const useDeleteMutation = (
   deleteLink: string,
   refresh: string,
-  imageLink: string,
+  imageLink?: string,
   options?: UseDeleteMutationOptions
 ) => {
   const router = useRouter();
