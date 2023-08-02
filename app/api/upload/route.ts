@@ -1,4 +1,5 @@
 import {
+  DeleteObjectCommand,
   GetObjectCommand,
   PutObjectCommand,
   S3Client,
@@ -6,6 +7,7 @@ import {
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuid } from "uuid";
+import sharp from "sharp";
 
 const s3Client = new S3Client({
   region: process.env.AWS_REGION as string,
@@ -15,21 +17,27 @@ const s3Client = new S3Client({
   },
 });
 
-async function uploadImage(
-  file: Buffer,
-  fileName: string
-): Promise<{ fileName: string; signedUrlPut: string }> {
-  const command = new PutObjectCommand({
+async function resizeAndUploadImage(
+  fileBuffer: Buffer,
+  maxWidth: number,
+  maxHeight: number,
+  fileExtension: string
+): Promise<string> {
+  const resizedImage = await sharp(fileBuffer)
+    .resize({ width: maxWidth, height: maxHeight, fit: "inside" })
+    .toBuffer();
+
+  const fileName = `images/${uuid()}.${fileExtension}`;
+  const putCommand = new PutObjectCommand({
     Bucket: process.env.AWS_BUCKET_NAME,
-    Key: `${fileName}`,
+    Key: fileName,
+    Body: resizedImage,
     ContentType: "image/jpeg",
   });
 
-  const signedUrlPut = await getSignedUrl(s3Client, command, {
-    expiresIn: 60,
-  });
+  await s3Client.send(putCommand);
 
-  return { fileName, signedUrlPut };
+  return fileName;
 }
 
 export async function POST(request: NextRequest, response: NextResponse) {
@@ -42,45 +50,69 @@ export async function POST(request: NextRequest, response: NextResponse) {
         { status: 400 }
       );
     }
-
-    const mimeType = file.type;
-    const fileExtension = mimeType.split("/")[1];
-
-    const name = `images/${uuid()}`;
+    const fileExtension = file.type.split("/")[1];
 
     const buffer = Buffer.from(await file.arrayBuffer());
-    const data = await uploadImage(buffer, name + "." + fileExtension);
+    const resizedFileName = await resizeAndUploadImage(
+      buffer,
+      640,
+      480,
+      fileExtension
+    );
 
-    return NextResponse.json({ success: true, data });
+    const signedUrlGet = await getSignedUrl(
+      s3Client,
+      new GetObjectCommand({
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key: resizedFileName,
+      }),
+      {
+        expiresIn: 3600,
+      }
+    );
+
+    return NextResponse.json({
+      success: true,
+      data: {
+        fileName: resizedFileName,
+        signedUrlGet,
+      },
+    });
   } catch (error) {
     console.error("Error uploading image:", error);
     NextResponse.json({ message: "Error uploading image" });
   }
 }
 
-async function generateSignedUrl(key: string): Promise<string> {
-  const command = new GetObjectCommand({
-    Bucket: process.env.AWS_BUCKET_NAME,
-    Key: key,
-  });
-
-  const signedUrlGet = await getSignedUrl(s3Client, command, {
-    expiresIn: 3600,
-  });
-  return signedUrlGet;
-}
-
-export async function GET(request: NextRequest, response: NextResponse) {
-  const key = request.nextUrl.searchParams.get("key");
-  if (!key) {
-    return null;
-  }
-
+export async function DELETE(request: NextRequest, response: NextResponse) {
   try {
-    const data = await generateSignedUrl(key);
-    return NextResponse.json({ success: true, data });
+    const { imageUrl } = await request.json();
+    const imageKey = imageUrl.split(".com/")[1];
+    
+    const signedUrlDelete = await getSignedUrl(
+      s3Client,
+      new DeleteObjectCommand({
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key: imageKey,
+      }),
+      {
+        expiresIn: 60,
+      }
+    );
+
+    await fetch(signedUrlDelete, {
+      method: "DELETE",
+    });
+
+    return NextResponse.json({
+      success: true,
+      message: "Image deleted successfully.",
+    });
   } catch (error) {
-    console.error("Error uploading image:", error);
-    NextResponse.json({ message: "Error uploading image" });
+    console.error("Error deleting image:", error);
+    return NextResponse.json(
+      { error: "Error deleting image" },
+      { status: 500 }
+    );
   }
 }

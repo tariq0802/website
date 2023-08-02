@@ -12,6 +12,7 @@ interface UseDeleteMutationOptions {
 const useDeleteMutation = (
   deleteLink: string,
   refresh: string,
+  imageLink: string,
   options?: UseDeleteMutationOptions
 ) => {
   const router = useRouter();
@@ -19,6 +20,23 @@ const useDeleteMutation = (
 
   const { mutate: deleteMutation, isLoading: loading } = useMutation({
     mutationFn: async () => {
+      if (imageLink) {
+        try {
+          const response = await axios.delete("/api/upload", {
+            data: { imageUrl: imageLink },
+          });
+          if (response.status === 200) {
+            toast({
+              title: "Image deleted",
+              description: "The image has been successfully deleted.",
+            });
+          } else {
+            toast({ title: "Error deleting image", variant: "destructive" });
+          }
+        } catch (error) {
+          toast({ title: "Error deleting image", variant: "destructive" });
+        }
+      }
       await axios.delete(deleteLink);
     },
     onSuccess: () => {

@@ -4,8 +4,7 @@ import { toast } from "@/hooks/use-toast";
 import axios from "axios";
 import { ImagePlus } from "lucide-react";
 import { useState } from "react";
-import MyImage from "./image";
-import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface ImageUploadProps {
   onChange: (file: string) => void;
@@ -16,7 +15,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   onChange,
   existingImage,
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
   const [src, setSrc] = useState(existingImage || "");
 
   const handleFileUpload = async (
@@ -25,25 +23,42 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     const file = event.target.files?.[0];
 
     if (file) {
-      setIsLoading(true);
       const formData = new FormData();
       formData.append("file", file);
 
       try {
         const response = await axios.post("/api/upload", formData);
         const data = await response.data;
+        const signedUrl = `${data.data.signedUrlPut}`;
+        const url = "https://cgwebsite.s3.ap-south-1.amazonaws.com/";
 
-        const imageUrl = `${data.data.signedUrlPut}`;
-
-        const signedUrlResponse = await axios.put(imageUrl, file, {
+        const signedUrlResponse = await axios.put(signedUrl, file, {
           headers: {
             "Content-Type": file.type,
           },
         });
 
+        if (src) {
+          try {
+            const response = await axios.delete("/api/upload", {
+              data: { imageUrl: src },
+            });
+            if (response.status === 200) {
+              toast({
+                title: "Image deleted",
+                description: "The image has been successfully deleted.",
+              });
+            } else {
+              toast({ title: "Error deleting image", variant: "destructive" });
+            }
+          } catch (error) {
+            toast({ title: "Error deleting image", variant: "destructive" });
+          }
+        }
+
         if (signedUrlResponse.status === 200) {
-          setSrc(data.data.fileName);
-          onChange(data.data.fileName);
+          setSrc(url + data.data.fileName);
+          onChange(url + data.data.fileName);
           toast({
             title: "Success !!!",
             description: "Image uploaded successfully.",
@@ -54,7 +69,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
       } catch (error) {
         toast({ title: "Error uploading image", variant: "destructive" });
       } finally {
-        setIsLoading(false);
       }
     }
   };
@@ -66,7 +80,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         className="flex relative w-52 h-36 cursor-pointer appearance-none items-center justify-center rounded border-2 border-dashed border-gray-200 p-6 transition-all hover:border-primary-300"
       >
         {src ? (
-          <MyImage src={src} fill alt="Photo" />
+          <Image src={src} fill alt="Photo" />
         ) : (
           <div className="space-y-1 text-center">
             <div className="mx-auto inline-flex h-20 w-20 items-center justify-center rounded-full bg-gray-100">

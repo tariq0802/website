@@ -1,7 +1,13 @@
 "use client";
 
 import { FieldValues, Path, UseFormReturn } from "react-hook-form";
-import { FormControl, FormField, FormItem, FormLabel } from "./ui/form";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./ui/form";
 import {
   Popover,
   PopoverContent,
@@ -25,8 +31,7 @@ interface SelectProps<T extends FieldValues> {
   label: string;
   data: any[];
 }
-
-const Select = <T extends FieldValues>({
+const MultiSelect = <T extends FieldValues>({
   form,
   name,
   label,
@@ -53,17 +58,35 @@ const Select = <T extends FieldValues>({
                     role="combobox"
                     aria-expanded={open}
                     className={cn(
-                      "w-[275px] justify-between",
+                      "w-[275px] justify-between h-fit",
                       !field.value && "text-muted-foreground"
                     )}
                   >
-                    {field.value
-                      ? data.find((item) => item.id === field.value)?.label
-                      : "Select"}
+                    {field.value && field.value.length > 0 ? (
+                      <div className="flex flex-wrap max-w-[100%] gap-1">
+                        {field.value.map((id: any) => {
+                          const label = data.find(
+                            (item) => item.id === id
+                          )?.label;
+                          return (
+                            <div
+                              key={id}
+                              className="px-2 py-1 mr-1 rounded-sm bg-gray-100 text-xs"
+                            >
+                              {label}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      "Select"
+                    )}
+
                     <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </FormControl>
               </PopoverTrigger>
+              <FormMessage />
 
               <PopoverContent className="w-[275px] p-0">
                 <Command>
@@ -77,8 +100,14 @@ const Select = <T extends FieldValues>({
                       <CommandItem
                         value={item.label}
                         key={item.id}
-                        onSelect={(value) => {
-                          form.setValue(name, item.id);
+                        onSelect={() => {
+                          const selectedIds = form.getValues(name) as Path<T>[];
+                          const updatedIds = selectedIds.includes(item.id)
+                            ? selectedIds.filter((id) => id !== item.id)
+                            : [...selectedIds, item.id];
+                          form.setValue(name, updatedIds as any, {
+                            shouldValidate: true,
+                          });
                           setOpen(false);
                         }}
                       >
@@ -86,7 +115,7 @@ const Select = <T extends FieldValues>({
                         <CheckIcon
                           className={cn(
                             "ml-auto h-4 w-4",
-                            item.id === field.value
+                            field.value?.includes(item.id)
                               ? "opacity-100"
                               : "opacity-0"
                           )}
@@ -103,4 +132,4 @@ const Select = <T extends FieldValues>({
     </>
   );
 };
-export default Select;
+export default MultiSelect;

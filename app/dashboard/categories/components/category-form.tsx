@@ -71,7 +71,8 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
 
   const { deleteMutation, loading, open, setOpen } = useDeleteMutation(
     deleteLink,
-    refresh
+    refresh,
+    imageSrc
   );
 
   return (

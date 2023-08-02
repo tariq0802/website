@@ -2,7 +2,7 @@
 
 import EditorJS from "@editorjs/editorjs";
 import TextareaAutosize from "react-textarea-autosize";
-import { Article, Case, Category, Recruitment } from "@prisma/client";
+import { Article, Case, Category, Recruitment, Tag } from "@prisma/client";
 import { AlertModal } from "@/components/alert-modal";
 import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
@@ -18,9 +18,10 @@ import useFormMutation from "@/hooks/use-form-mutation";
 import useDeleteMutation from "@/hooks/use-delete-mutation";
 import Select from "@/components/select";
 import TextArea from "@/components/text-area";
-import { usePathname, useRouter } from "next/navigation";
 import { Label } from "@/components/ui/label";
 import ImageUpload from "@/components/image-upload";
+import MultiSelect from "@/components/MultiSelect";
+import { Session } from "next-auth";
 
 const formSchema = z.object({
   title: z.string().min(2),
@@ -32,15 +33,23 @@ const formSchema = z.object({
   recruitmentId: z.string().nullable(),
   image: z.string().nullable(),
   content: z.any(),
+  tagIds: z.array(z.string()),
 });
 
 type ArticleFormValues = z.infer<typeof formSchema>;
 
 interface ArticleFormProps {
-  initialData: Article | null;
+  initialData:
+    | (Article & {
+        tags: Tag[];
+      })
+    | null;
+
   categories: Category[];
   cases: Case[];
   recruitments: Recruitment[];
+  tags: Tag[];
+  session: Session | null;
 }
 
 const RecruitmentForm: React.FC<ArticleFormProps> = ({
@@ -48,6 +57,8 @@ const RecruitmentForm: React.FC<ArticleFormProps> = ({
   categories,
   cases,
   recruitments,
+  tags,
+  session,
 }) => {
   const [imageSrc, setImageSrc] = useState(initialData?.image || "");
   const formTitle = initialData ? "Edit article" : "Create article";
@@ -59,23 +70,26 @@ const RecruitmentForm: React.FC<ArticleFormProps> = ({
 
   const ref = useRef<EditorJS>();
   const _titleRef = useRef<HTMLTextAreaElement>(null);
-  const router = useRouter();
   const [isMounted, setIsMounted] = useState<boolean>(false);
-  const pathname = usePathname();
 
   const defaultValues = initialData
-    ? { ...initialData }
+    ? {
+        ...initialData,
+        tagIds: initialData.tags?.map((tag: any) => tag.id) || [],
+      }
     : {
         title: "",
         slug: "",
         categoryId: "",
-        authorId: "",
+        authorId: session?.user.id,
         description: "",
         caseId: "",
         recruitmentId: "",
         image: "",
         content: null,
+        tagIds: [],
       };
+
 
   const form = useForm<ArticleFormValues>({
     resolver: zodResolver(formSchema),
@@ -84,24 +98,12 @@ const RecruitmentForm: React.FC<ArticleFormProps> = ({
 
   const title = form.watch("title");
   const selectedCategory = form.watch("categoryId");
-  console.log("category: ", selectedCategory);
-  console.log("data: ", form.watch());
 
   useEffect(() => {
     const slugifiedLabel = slugify(title, { lower: true });
     form.setValue("slug", slugifiedLabel);
     form.setValue("image", imageSrc);
   }, [form, imageSrc, title]);
-
-  const { mutate: mutate, isLoading } = useFormMutation<
-    ArticleFormValues,
-    Article
-  >(link, initialData, refresh);
-
-  const { deleteMutation, loading, open, setOpen } = useDeleteMutation(
-    deleteLink,
-    refresh
-  );
 
   const initializeEditor = useCallback(async () => {
     const EditorJS = (await import("@editorjs/editorjs")).default;
@@ -168,6 +170,23 @@ const RecruitmentForm: React.FC<ArticleFormProps> = ({
 
   const { ref: titleRef, ...rest } = form.register("title");
 
+  const { mutate: mutate, isLoading } = useFormMutation<
+    ArticleFormValues,
+    Article
+  >(link, initialData as any, refresh);
+
+  const { deleteMutation, loading, open, setOpen } = useDeleteMutation(
+    deleteLink,
+    refresh,
+    imageSrc
+  );
+
+  const onSubmit = async (payload: ArticleFormValues) => {
+    const savedContent = await ref.current?.save();
+    const updatedPayload = { ...payload, content: savedContent };
+    mutate(updatedPayload);
+  };
+
   return (
     <div>
       <AlertModal
@@ -195,9 +214,7 @@ const RecruitmentForm: React.FC<ArticleFormProps> = ({
 
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit((payload: ArticleFormValues) =>
-            mutate(payload)
-          )}
+          onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 w-full"
         >
           <div className="flex flex-col gap-4">
@@ -222,8 +239,14 @@ const RecruitmentForm: React.FC<ArticleFormProps> = ({
               <Select form={form} label="Case No" name="caseId" data={cases} />
             ) : null}
             {selectedCategory === "clkk59xej0008rvrsray3qimk" ? (
-              <Select form={form} label="Recruitment" name="recruitmentId" data={recruitments} />
+              <Select
+                form={form}
+                label="Recruitment"
+                name="recruitmentId"
+                data={recruitments}
+              />
             ) : null}
+            <MultiSelect form={form} label="Tags" name="tagIds" data={tags} />
             <TextArea
               form={form}
               label="Description"

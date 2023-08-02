@@ -3,7 +3,7 @@ import ArticlesClient from "./components/client";
 
 const ArticlesPage = async () => {
   const articles = await db.article.findMany({
-    include: { category: true, author: true},
+    include: { category: true, author: true, tags: true},
     orderBy: {
       createdAt: "desc",
     },

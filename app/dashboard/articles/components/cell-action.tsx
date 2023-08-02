@@ -26,7 +26,8 @@ const CellAction: React.FC<CellActionProps> = ({ data }) => {
 
   const { deleteMutation, loading, open, setOpen } = useDeleteMutation(
     deleteLink,
-    refresh
+    refresh,
+    data.image || ""
   );
 
   const onCopy = (id: string) => {

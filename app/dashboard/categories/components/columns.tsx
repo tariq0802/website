@@ -2,8 +2,8 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
-import MyImage from "@/components/image";
 import { formatTimeToNow } from "@/lib/utils";
+import Image from "next/image";
 
 export type CategoryColumn = {
   id: string;
@@ -21,7 +21,7 @@ export const columns: ColumnDef<CategoryColumn>[] = [
     cell: ({ row }) => (
       <div className="relative w-20 h-14">
         {row.original.image && (
-          <MyImage src={row.original.image} alt="Category Image" fill />
+          <Image src={row.original.image} alt="Category Image" fill />
         )}
       </div>
     ),
