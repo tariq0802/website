@@ -9,6 +9,7 @@ export type ArticleColumn = {
   id: string;
   title: string;
   slug: string;
+  titleSlug: string;
   description: string | null;
   image: string | null;
   content: Prisma.JsonValue;
@@ -18,8 +19,8 @@ export type ArticleColumn = {
   categoryId: string;
   caseId: string | null;
   recruitmentId: string | null;
-  author: User
-  category: Category
+  author: User;
+  category: Category;
 };
 
 export const columns: ColumnDef<ArticleColumn>[] = [

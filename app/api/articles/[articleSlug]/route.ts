@@ -25,6 +25,7 @@ export async function PATCH(request: Request, { params }: { params: Iparams }) {
   const body = await request.json();
   const {
     title,
+    titleSlug,
     slug,
     categoryId,
     authorId,
@@ -42,6 +43,7 @@ export async function PATCH(request: Request, { params }: { params: Iparams }) {
     },
     data: {
       title,
+      titleSlug,
       slug,
       categoryId,
       authorId,

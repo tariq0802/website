@@ -22,10 +22,12 @@ import { Label } from "@/components/ui/label";
 import ImageUpload from "@/components/image-upload";
 import MultiSelect from "@/components/MultiSelect";
 import { Session } from "next-auth";
+import Input from "@/components/input";
 
 const formSchema = z.object({
   title: z.string().min(2),
   slug: z.string().min(2),
+  titleSlug: z.string().min(2),
   categoryId: z.string(),
   authorId: z.string(),
   description: z.string().nullable(),
@@ -52,7 +54,7 @@ interface ArticleFormProps {
   session: Session | null;
 }
 
-const RecruitmentForm: React.FC<ArticleFormProps> = ({
+const ArticleForm: React.FC<ArticleFormProps> = ({
   initialData,
   categories,
   cases,
@@ -79,6 +81,7 @@ const RecruitmentForm: React.FC<ArticleFormProps> = ({
       }
     : {
         title: "",
+        titleSlug: "",
         slug: "",
         categoryId: "",
         authorId: session?.user.id,
@@ -90,20 +93,19 @@ const RecruitmentForm: React.FC<ArticleFormProps> = ({
         tagIds: [],
       };
 
-
   const form = useForm<ArticleFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues,
   });
 
-  const title = form.watch("title");
+  const titleSlug = form.watch("titleSlug");
   const selectedCategory = form.watch("categoryId");
 
   useEffect(() => {
-    const slugifiedLabel = slugify(title, { lower: true });
+    const slugifiedLabel = slugify(titleSlug, { lower: true });
     form.setValue("slug", slugifiedLabel);
     form.setValue("image", imageSrc);
-  }, [form, imageSrc, title]);
+  }, [form, imageSrc, titleSlug]);
 
   const initializeEditor = useCallback(async () => {
     const EditorJS = (await import("@editorjs/editorjs")).default;
@@ -124,7 +126,7 @@ const RecruitmentForm: React.FC<ArticleFormProps> = ({
         },
         placeholder: "Type post content here...",
         inlineToolbar: true,
-        data: { blocks: [] },
+        data: initialData?.content as any || { blocks: [] },
         tools: {
           header: Header,
           list: List,
@@ -142,7 +144,7 @@ const RecruitmentForm: React.FC<ArticleFormProps> = ({
         },
       });
     }
-  }, []);
+  }, [initialData?.content]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -247,12 +249,19 @@ const RecruitmentForm: React.FC<ArticleFormProps> = ({
               />
             ) : null}
             <MultiSelect form={form} label="Tags" name="tagIds" data={tags} />
+            <Input
+              disabled={isLoading}
+              form={form}
+              name="titleSlug"
+              label="Slug"
+              placeholder="Write title in english"
+            />
             <TextArea
               form={form}
               label="Description"
               name="description"
               disabled={loading}
-              placeholder="Recruitment description"
+              placeholder="Article description"
             />
             <div className="mt-6 space-y-2">
               <Label>Content</Label>
@@ -261,9 +270,12 @@ const RecruitmentForm: React.FC<ArticleFormProps> = ({
                   ref={titleRef}
                   {...rest}
                   placeholder="Title"
-                  className="w-full resize-none appearance-none overflow-hidden bg-transparent text-2xl font-bold focus:outline-none text-slate-600"
+                  className="w-full resize-none appearance-none overflow-hidden bg-transparent text-2xl font-bold focus:outline-none text-slate-600 editorContent"
                 />
-                <div id="editor" className="min-h-[500px] text-slate-600" />
+                <div
+                  id="editor"
+                  className="min-h-[500px] text-slate-600 editorContent"
+                />
               </div>
             </div>
             <Button disabled={isLoading} className="ml-auto" type="submit">
@@ -275,4 +287,4 @@ const RecruitmentForm: React.FC<ArticleFormProps> = ({
     </div>
   );
 };
-export default RecruitmentForm;
+export default ArticleForm;

@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
-import RecruitmentForm from "../components/article-form";
 import { getAuthSession } from "@/lib/auth";
+import ArticleForm from "../components/article-form";
 
 const ArticlePage = async ({ params }: { params: { articleSlug: string } }) => {
   const session = await getAuthSession();
@@ -26,8 +26,8 @@ const ArticlePage = async ({ params }: { params: { articleSlug: string } }) => {
 
   return (
     <div className="flex-col">
-      <div className="flex-1 space-y-4 p-8 pt-6">
-        <RecruitmentForm
+      <div className="flex-1 space-y-4">
+        <ArticleForm
           initialData={article}
           categories={categories}
           cases={cases}

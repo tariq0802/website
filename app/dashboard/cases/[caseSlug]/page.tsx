@@ -11,7 +11,7 @@ const CasePage = async ({ params }: { params: { caseSlug: string } }) => {
 
   return (
     <div className="flex-col">
-      <div className="flex-1 space-y-4 p-8 pt-6">
+      <div className="flex-1 space-y-4">
         <CaseForm initialData={data} caseCategories={caseCategories} />
       </div>
     </div>

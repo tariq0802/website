@@ -59,6 +59,7 @@ model User {
 model Article {
   id            String       @id @default(cuid())
   title         String
+  titleSlug     String
   slug          String       @unique
   description   String?
   image         String?      @db.Text

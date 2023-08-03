@@ -8,6 +8,7 @@ export async function POST(req: Request) {
     const {
       title,
       slug,
+      titleSlug,
       categoryId,
       authorId,
       description,
@@ -22,6 +23,7 @@ export async function POST(req: Request) {
       data: {
         title,
         slug,
+        titleSlug,
         categoryId,
         authorId,
         description,

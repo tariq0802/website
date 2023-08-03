@@ -11,7 +11,6 @@ import { Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import slugify from "slugify";
 import ImageUpload from "@/components/image-upload";
 import useFormMutation from "@/hooks/use-form-mutation";
 import useDeleteMutation from "@/hooks/use-delete-mutation";
@@ -52,13 +51,9 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
     defaultValues,
   });
 
-  const label = form.watch("label");
-
   useEffect(() => {
-    const slugifiedLabel = slugify(label, { lower: true });
-    form.setValue("slug", slugifiedLabel);
     form.setValue("image", imageSrc);
-  }, [label, form, imageSrc]);
+  }, [form, imageSrc]);
 
   const link = "/api/categories";
   const deleteLink = `/api/categories/${initialData?.slug}`;
@@ -126,6 +121,13 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
               label="Label"
               disabled={loading}
               placeholder="Category Name"
+            />
+            <Input
+              form={form}
+              name="slug"
+              label="Slug"
+              disabled={loading}
+              placeholder="Slug name in english"
             />
             <TextArea
               form={form}
