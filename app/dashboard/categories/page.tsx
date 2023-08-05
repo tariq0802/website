@@ -1,4 +1,3 @@
-
 import { db } from "@/lib/db";
 import CategoriesClient from "./components/client";
 
@@ -7,10 +6,8 @@ const CategoriesPage = async () => {
     orderBy: {
       label: "asc",
     },
+    include: { parent: true },
   });
-
-  
-
 
   return (
     <div className="flex-col">

@@ -4,6 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
 import { formatTimeToNow } from "@/lib/utils";
 import Image from "next/image";
+import { Category } from "@prisma/client";
 
 export type CategoryColumn = {
   id: string;
@@ -12,6 +13,8 @@ export type CategoryColumn = {
   createdAt: Date;
   image: string | null;
   description: string | null;
+  parentId: string | null;
+  parent: Category | null;
 };
 
 export const columns: ColumnDef<CategoryColumn>[] = [
@@ -29,6 +32,11 @@ export const columns: ColumnDef<CategoryColumn>[] = [
   {
     accessorKey: "label",
     header: "Label",
+  },
+  {
+    accessorKey: "parent",
+    header: "Parent",
+    cell: ({ row }) => (row.original.parent?.label)
   },
   {
     accessorKey: "createdAt",

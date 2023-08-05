@@ -23,7 +23,7 @@ interface SelectProps<T extends FieldValues> {
   form: UseFormReturn<T>;
   name: Path<T>;
   label: string;
-  data: any[];
+  data: any[] | null;
 }
 
 const Select = <T extends FieldValues>({
@@ -58,7 +58,7 @@ const Select = <T extends FieldValues>({
                     )}
                   >
                     {field.value
-                      ? data.find((item) => item.id === field.value)?.label
+                      ? data?.find((item) => item.id === field.value)?.label
                       : "Select"}
                     <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
@@ -73,7 +73,7 @@ const Select = <T extends FieldValues>({
                   />
                   <CommandEmpty>No category found.</CommandEmpty>
                   <CommandGroup>
-                    {data.map((item) => (
+                    {data?.map((item) => (
                       <CommandItem
                         value={item.label}
                         key={item.id}

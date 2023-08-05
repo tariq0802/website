@@ -10,12 +10,19 @@ const CategoryPage = async ({
     where: {
       slug: params.categorySlug,
     },
+    include: {parent: true}
+  });
+
+  const parents = await db.category.findMany({
+    where: {
+      parentId: null,
+    },
   });
 
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4">
-        <CategoryForm initialData={category} />
+        <CategoryForm initialData={category} parents={parents} />
       </div>
     </div>
   );

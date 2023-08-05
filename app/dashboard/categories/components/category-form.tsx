@@ -16,21 +16,24 @@ import useFormMutation from "@/hooks/use-form-mutation";
 import useDeleteMutation from "@/hooks/use-delete-mutation";
 import Input from "@/components/input";
 import TextArea from "@/components/text-area";
+import Select from "@/components/select";
 
 const formSchema = z.object({
   label: z.string().min(2),
   slug: z.string().min(2),
   image: z.string().nullable(),
   description: z.string().nullable(),
+  parentId: z.string().nullable(),
 });
 
 type CategoryFormValues = z.infer<typeof formSchema>;
 
 interface CategoryFormProps {
   initialData: Category | null;
+  parents: Category[] | null
 }
 
-export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
+export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData, parents }) => {
   const [imageSrc, setImageSrc] = useState(initialData?.image || "");
 
   const title = initialData ? "Edit category" : "Create category";
@@ -44,6 +47,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
         slug: "",
         image: "",
         description: "",
+        parentId: "",
       };
 
   const form = useForm<CategoryFormValues>({
@@ -115,6 +119,12 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
               </div>
             </FormItem>
 
+            <Select
+              form={form}
+              label="Parent"
+              name="parentId"
+              data={parents}
+            />
             <Input
               form={form}
               name="label"

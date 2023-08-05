@@ -66,6 +66,8 @@ model Article {
   content       Json?
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
+  isPublished   Boolean      @default(false)
+  isFeatured    Boolean      @default(false)
   author        User         @relation(fields: [authorId], references: [id])
   authorId      String
   category      Category     @relation(fields: [categoryId], references: [id])
@@ -85,13 +87,18 @@ model Article {
 }
 
 model Category {
-  id          String    @id @default(cuid())
+  id          String     @id @default(cuid())
   label       String
-  slug        String    @unique
+  slug        String     @unique
   description String?
-  createdAt   DateTime  @default(now())
-  image       String?   @db.Text
+  createdAt   DateTime   @default(now())
+  image       String?    @db.Text
   articles    Article[]
+  parent      Category?  @relation("ParentChild", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  parentId    String?
+  children    Category[] @relation("ParentChild")
+
+  @@index([parentId])
 }
 
 model Tag {

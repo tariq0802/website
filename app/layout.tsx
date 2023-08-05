@@ -1,14 +1,13 @@
 import NavBar from "@/components/navbar";
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter, Noto_Serif_Bengali } from "next/font/google";
+import { Noto_Serif_Bengali } from "next/font/google";
 import Container from "@/components/container";
 import Provider from "@/providers/provider";
 import { getAuthSession } from "@/lib/auth";
 import { Toaster } from "@/components/ui/toaster";
 
-const noto = Noto_Serif_Bengali({ subsets: ["bengali"],  });
-const inter = Inter({ subsets: ["latin"] });
+const noto = Noto_Serif_Bengali({ subsets: ["bengali"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
