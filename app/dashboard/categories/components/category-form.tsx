@@ -17,9 +17,11 @@ import useDeleteMutation from "@/hooks/use-delete-mutation";
 import Input from "@/components/input";
 import TextArea from "@/components/text-area";
 import Select from "@/components/select";
+import slugify from "slugify";
 
 const formSchema = z.object({
   label: z.string().min(2),
+  title: z.string().min(2),
   slug: z.string().min(2),
   image: z.string().nullable(),
   description: z.string().nullable(),
@@ -30,20 +32,26 @@ type CategoryFormValues = z.infer<typeof formSchema>;
 
 interface CategoryFormProps {
   initialData: Category | null;
-  parents: Category[] | null
+  parents: Category[] | null;
 }
 
-export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData, parents }) => {
+export const CategoryForm: React.FC<CategoryFormProps> = ({
+  initialData,
+  parents,
+}) => {
   const [imageSrc, setImageSrc] = useState(initialData?.image || "");
 
-  const title = initialData ? "Edit category" : "Create category";
-  const description = initialData ? "Edit a category." : "Add a new category";
+  const formTitle = initialData ? "Edit category" : "Create category";
+  const formDescription = initialData
+    ? "Edit a category."
+    : "Add a new category";
   const action = initialData ? "Save changes" : "Create";
 
   const defaultValues = initialData
     ? { ...initialData }
     : {
         label: "",
+        title: "",
         slug: "",
         image: "",
         description: "",
@@ -55,9 +63,13 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData, parents
     defaultValues,
   });
 
+  const title = form.watch("title");
+
   useEffect(() => {
+    const slugifiedTitle = slugify(title, { lower: true });
     form.setValue("image", imageSrc);
-  }, [form, imageSrc]);
+    form.setValue("slug", slugifiedTitle);
+  }, [form, imageSrc, title]);
 
   const link = "/api/categories";
   const deleteLink = `/api/categories/${initialData?.slug}`;
@@ -84,7 +96,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData, parents
       />
 
       <div className="flex items-center justify-between pb-2">
-        <Heading title={title} description={description} />
+        <Heading title={formTitle} description={formDescription} />
         {initialData && (
           <Button
             disabled={loading}
@@ -119,12 +131,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData, parents
               </div>
             </FormItem>
 
-            <Select
-              form={form}
-              label="Parent"
-              name="parentId"
-              data={parents}
-            />
+            <Select form={form} label="Parent" name="parentId" data={parents} />
             <Input
               form={form}
               name="label"
@@ -134,7 +141,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData, parents
             />
             <Input
               form={form}
-              name="slug"
+              name="title"
               label="Slug"
               disabled={loading}
               placeholder="Slug name in english"

@@ -5,7 +5,7 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const { label, slug, description, image, parentId } = body;
+    const { label, title, slug, description, image, parentId } = body;
 
     if (!label) {
       return new NextResponse("Label is required", { status: 400 });
@@ -16,7 +16,14 @@ export async function POST(req: Request) {
     }
 
     const category = await db.category.create({
-      data: { label, slug, description, image, parentId: parentId || null },
+      data: {
+        label,
+        title,
+        slug,
+        description,
+        image,
+        parentId: parentId || null,
+      },
     });
 
     return NextResponse.json(category);

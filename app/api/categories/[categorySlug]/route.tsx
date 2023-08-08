@@ -21,13 +21,14 @@ export async function DELETE(
 export async function PATCH(request: Request, { params }: { params: Iparams }) {
   const { categorySlug } = params;
   const body = await request.json();
-  const { label, slug, image, description, parentId } = body;
+  const { label, title, slug, image, description, parentId } = body;
   const update = await db.category.update({
     where: {
       slug: categorySlug,
     },
     data: {
       label,
+      title,
       slug,
       image,
       description,
