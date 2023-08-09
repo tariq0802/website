@@ -28,7 +28,7 @@ interface NavbarProps {
 
 const NavBar: React.FC<NavbarProps> = ({ session, news, preparetion }) => {
   return (
-    <div className="fixed w-full bg-cyan-100 z-10 shadow-sm">
+    <div className="fixed w-full shadow-sm">
       <div className="flex flex-col">
         <Container>
           <div className="flex flex-row md:py-4 py-2 items-center justify-between gap-3 md:gap-0">
@@ -93,9 +93,9 @@ const NavBar: React.FC<NavbarProps> = ({ session, news, preparetion }) => {
               />
               <NavMenu
                 data={preparetion}
-                title="প্রস্তুতি সমগ্র"
+                title="গাইডেন্স সমগ্র"
                 slug="/preparetion"
-                label="গাইডেন্স"
+                label="গাইড"
                 description="description"
               />
               <NavigationMenuItem>
@@ -108,14 +108,11 @@ const NavBar: React.FC<NavbarProps> = ({ session, news, preparetion }) => {
               <NavigationMenuItem>
                 <Link href="/case-listing" legacyBehavior passHref>
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    মামলাপঞ্জী
+                    মামলা
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
-              <NavMenu
-                data={preparetion}
-                label="অন্যান্য"
-              />
+              <NavMenu data={preparetion} label="আরও" />
             </NavigationMenuList>
           </NavigationMenu>
         </div>
