@@ -24,14 +24,8 @@ export default async function RootLayout({
   const news = await db.category.findMany({
     where: { parentId: "cll2p69yq0001rvg050ck12j2" },
   });
-  const career = await db.category.findMany({
-    where: { parentId: "cll2p93cf0003rvg0mf7h3bnt" },
-  });
   const preparetion = await db.category.findMany({
     where: { parentId: "cll2paocr0005rvg0b96feotc" },
-  });
-  const lawsuit = await db.category.findMany({
-    where: { parentId: "cll2pdmkw0007rvg01l989vr7" },
   });
 
   return (
@@ -41,9 +35,7 @@ export default async function RootLayout({
           <NavBar
             session={session}
             news={news}
-            career={career}
             preparetion={preparetion}
-            lawsuit={lawsuit}
           />
           <Container>
             <div className="pt-36">{children}</div>
