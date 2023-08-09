@@ -28,7 +28,7 @@ interface NavbarProps {
 
 const NavBar: React.FC<NavbarProps> = ({ session, news, preparetion }) => {
   return (
-    <div className="fixed w-full shadow-sm">
+    <div className="relative w-full shadow-sm">
       <div className="flex flex-col">
         <Container>
           <div className="flex flex-row md:py-4 py-2 items-center justify-between gap-3 md:gap-0">
