@@ -4,7 +4,7 @@ import CategoriesClient from "./components/client";
 const CategoriesPage = async () => {
   const categories = await db.category.findMany({
     orderBy: {
-      label: "asc",
+      createdAt: "desc",
     },
     include: { parent: true },
   });

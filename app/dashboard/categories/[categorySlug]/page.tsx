@@ -10,7 +10,6 @@ const CategoryPage = async ({
     where: {
       slug: params.categorySlug,
     },
-    include: {parent: true}
   });
 
   const parents = await db.category.findMany({

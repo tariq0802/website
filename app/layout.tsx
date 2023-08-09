@@ -6,6 +6,7 @@ import Container from "@/components/container";
 import Provider from "@/providers/provider";
 import { getAuthSession } from "@/lib/auth";
 import { Toaster } from "@/components/ui/toaster";
+import { db } from "@/lib/db";
 
 const noto = Noto_Serif_Bengali({ subsets: ["bengali"] });
 
@@ -20,12 +21,30 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await getAuthSession();
+  const news = await db.category.findMany({
+    where: { parentId: "cll2p69yq0001rvg050ck12j2" },
+  });
+  const career = await db.category.findMany({
+    where: { parentId: "cll2p93cf0003rvg0mf7h3bnt" },
+  });
+  const preparetion = await db.category.findMany({
+    where: { parentId: "cll2paocr0005rvg0b96feotc" },
+  });
+  const lawsuit = await db.category.findMany({
+    where: { parentId: "cll2pdmkw0007rvg01l989vr7" },
+  });
 
   return (
     <html lang="en">
       <body className={noto.className}>
         <Provider>
-          <NavBar session={session} />
+          <NavBar
+            session={session}
+            news={news}
+            career={career}
+            preparetion={preparetion}
+            lawsuit={lawsuit}
+          />
           <Container>
             <div className="pt-36">{children}</div>
           </Container>

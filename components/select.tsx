@@ -78,7 +78,9 @@ const Select = <T extends FieldValues>({
                         value={item.label}
                         key={item.id}
                         onSelect={(value) => {
-                          form.setValue(name, item.id);
+                          const fieldValue =
+                            field.value === item.id ? null : item.id;
+                          form.setValue(name, fieldValue);
                           setOpen(false);
                         }}
                       >
