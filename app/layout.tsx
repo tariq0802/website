@@ -40,7 +40,7 @@ export default async function RootLayout({
             <NavBar news={news} preparetion={preparetion} />
           </nav>
           <Container>
-            <div className="pt-36">{children}</div>
+            <div className="pt-8">{children}</div>
           </Container>
         </Provider>
         <Toaster />
