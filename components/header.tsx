@@ -23,7 +23,7 @@ const Header: React.FC<HeaderProps> = ({ session }) => {
           </div>
         </Link>
 
-        <div className="flex items-center">
+        {/* <div className="flex items-center">
           {session?.user ? (
             <UserMenu user={session.user} />
           ) : (
@@ -39,7 +39,7 @@ const Header: React.FC<HeaderProps> = ({ session }) => {
           )}
 
           <ToggleMenu />
-        </div>
+        </div> */}
       </div>
     </Container>
   );
