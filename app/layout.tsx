@@ -32,7 +32,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={noto.className}>
         <Provider>
-          <header>
+          <header className="bg-rose-500 h-16 flex justify-between items-center relative">
             <NavBar session={session} news={news} preparetion={preparetion} />
           </header>
           <Container>

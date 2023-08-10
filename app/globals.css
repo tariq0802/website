@@ -76,9 +76,6 @@
     @apply bg-background text-foreground;
   }
 }
-header {
-  background-color: red;
-}
 
 .editorContent {
   font-family: 'Noto Serif Bengali', serif;
