@@ -1,11 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import Container from "./container";
-import ToggleMenu from "./menu";
-import UserMenu from "./user-menu";
-
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -13,10 +9,7 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "./ui/navigation-menu";
-import { LogIn } from "lucide-react";
 import { HomeIcon } from "@radix-ui/react-icons";
-import { Session } from "next-auth";
-import { buttonVariants } from "./ui/button";
 import { Category } from "@prisma/client";
 import NavMenu from "./nav-menu";
 
@@ -57,7 +50,7 @@ const NavBar: React.FC<NavbarProps> = ({ news, preparetion }) => {
             <NavigationMenuItem>
               <Link href="/job-listings" legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  কর্মতালিকা
+                  নিয়োগসূচী 
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
@@ -68,7 +61,7 @@ const NavBar: React.FC<NavbarProps> = ({ news, preparetion }) => {
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
-            <NavMenu data={preparetion} label="আরও" />
+            <NavMenu data={preparetion} label="অন্যান্য" />
           </NavigationMenuList>
         </NavigationMenu>
       </div>

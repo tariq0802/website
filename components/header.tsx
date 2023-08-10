@@ -18,9 +18,7 @@ const Header: React.FC<HeaderProps> = ({ session }) => {
     <Container>
       <div className="flex justify-between items-center">
         <Link href="/">
-          <div className="relative h-[28px] w-[165px] md:h-[40px] md:w-[250px]">
-            <Image alt="Logo" src="/images/logo1.png" fill />
-          </div>
+          <Image alt="Logo" src="/images/logo2.svg" height={10} width={120} />
         </Link>
 
         <div className="flex items-center">
