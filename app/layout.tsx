@@ -7,6 +7,7 @@ import Provider from "@/providers/provider";
 import { getAuthSession } from "@/lib/auth";
 import { Toaster } from "@/components/ui/toaster";
 import { db } from "@/lib/db";
+import Header from "@/components/header";
 
 const noto = Noto_Serif_Bengali({ subsets: ["bengali"] });
 
@@ -32,9 +33,12 @@ export default async function RootLayout({
     <html lang="en">
       <body className={noto.className}>
         <Provider>
-          <header className="bg-rose-500 h-16 flex justify-between items-center relative">
-            <NavBar session={session} news={news} preparetion={preparetion} />
+          <header className="bg-cyan-100 h-16 md:h-20 flex items-center relative">
+            <Header session={session} />
           </header>
+          <nav className=" h-8 flex justify-center items-center overflow-x-auto sticky z-50 bg-slate-800 text-slate-100 transition-all">
+            <NavBar news={news} preparetion={preparetion} />
+          </nav>
           <Container>
             <div className="pt-36">{children}</div>
           </Container>

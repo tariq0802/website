@@ -21,16 +21,15 @@ import { Category } from "@prisma/client";
 import NavMenu from "./nav-menu";
 
 interface NavbarProps {
-  session: Session | null;
   news: Category[];
   preparetion: Category[];
 }
 
-const NavBar: React.FC<NavbarProps> = ({ session, news, preparetion }) => {
+const NavBar: React.FC<NavbarProps> = ({ news, preparetion }) => {
   return (
-    <Container>
-      <Link href="/">logo</Link>
-    </Container>
+      <Container>
+        nav
+      </Container>
     // <div className="fixed w-full bg-cyan-100 z-10 shadow-sm">
     //   <div className="flex flex-col">
     //     <Container>
