@@ -33,10 +33,10 @@ export default async function RootLayout({
     <html lang="en">
       <body className={noto.className}>
         <Provider>
-          <header className=" bg-rose-500 h-16 flex justify-between items-center relative">
+          <header className="h-16 flex justify-between items-center relative">
             <Header session={session} />
           </header>
-          <nav className="bg-slate-800 text-gray-100 h-8 flex justify-center items-center stiky">
+          <nav className="bg-slate-800 text-gray-100 sticky top-0 z-50">
             <NavBar news={news} preparetion={preparetion} />
           </nav>
           <Container>
