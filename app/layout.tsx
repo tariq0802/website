@@ -36,9 +36,9 @@ export default async function RootLayout({
           <header className="bg-cyan-100 h-16 md:h-20 flex items-center relative">
             <Header session={session} />
           </header>
-          <nav className=" h-8 flex justify-center items-center overflow-x-auto sticky z-50 bg-slate-800 text-slate-100 transition-all">
+          {/* <nav className=" h-8 flex justify-center items-center overflow-x-auto sticky z-50 bg-slate-800 text-slate-100 transition-all">
             <NavBar news={news} preparetion={preparetion} />
-          </nav>
+          </nav> */}
           <Container>
             <div className="pt-36">{children}</div>
           </Container>
