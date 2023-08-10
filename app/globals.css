@@ -78,15 +78,6 @@
   }
 }
 
-header {
-  background: #fdfcad;
-  height: 55px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-}
-
 .editorContent {
   font-family: "Noto Serif Bengali", serif;
 }
