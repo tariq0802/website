@@ -32,11 +32,9 @@ export default async function RootLayout({
     <html lang="en">
       <body className={noto.className}>
         <Provider>
-          <NavBar
-            session={session}
-            news={news}
-            preparetion={preparetion}
-          />
+          <header>
+            <NavBar session={session} news={news} preparetion={preparetion} />
+          </header>
           <Container>
             <div className="pt-36">{children}</div>
           </Container>
