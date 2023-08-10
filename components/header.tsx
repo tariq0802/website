@@ -16,14 +16,15 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ session }) => {
   return (
     <Container>
-      <div className="flex justify-between items-center">
+      logo
+      {/* <div className="flex justify-between items-center">
         <Link href="/">
           <div className="relative h-[28px] w-[165px] md:h-[40px] md:w-[250px]">
             <Image alt="Logo" src="/images/logo1.png" fill />
           </div>
         </Link>
 
-        {/* <div className="flex items-center">
+        <div className="flex items-center">
           {session?.user ? (
             <UserMenu user={session.user} />
           ) : (
@@ -39,8 +40,8 @@ const Header: React.FC<HeaderProps> = ({ session }) => {
           )}
 
           <ToggleMenu />
-        </div> */}
-      </div>
+        </div>
+      </div> */}
     </Container>
   );
 };
