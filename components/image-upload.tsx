@@ -5,18 +5,16 @@ import axios from "axios";
 import { ImagePlus } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
-import { FormControl, FormItem, FormLabel } from "./ui/form";
+import { FormItem, FormLabel } from "./ui/form";
 
 interface ImageUploadProps {
   onChange: (file: string) => void;
   existingImage?: string;
-  label: string;
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({
   onChange,
   existingImage,
-  label,
 }) => {
   const [src, setSrc] = useState(existingImage || "");
 
@@ -78,8 +76,8 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 
   return (
     <div>
-      <FormItem className="grid grid-cols-5 md:gap-6 gap-3">
-        <FormLabel className="col-span-1 text-end">{label}</FormLabel>
+      <FormItem className="grid grid-cols-9 md:gap-6 gap-3">
+        <FormLabel className="col-span-2 text-end">Image</FormLabel>
         <label
           htmlFor="image_input"
           className="flex relative w-52 h-36 cursor-pointer appearance-none items-center justify-center rounded border-2 border-dashed border-gray-200 p-6 transition-all hover:border-primary-300"

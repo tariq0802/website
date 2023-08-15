@@ -224,7 +224,6 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
             <ImageUpload
               onChange={(src: string) => setImageSrc(src)}
               existingImage={initialData?.image || undefined}
-              label="Image"
             />
             <Select
               form={form}
