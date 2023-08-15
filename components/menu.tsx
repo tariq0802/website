@@ -23,14 +23,17 @@ import Link from "next/link";
 import { Category } from "@prisma/client";
 import React from "react";
 import { Separator } from "./ui/separator";
-import { ComponentBooleanIcon, ThickArrowRightIcon, ValueIcon } from "@radix-ui/react-icons";
+import {
+  ComponentBooleanIcon,
+  ThickArrowRightIcon,
+  ValueIcon,
+} from "@radix-ui/react-icons";
 
 interface ToogleMenuProps {
   categories: (Category & { children: Category[] | null })[];
 }
 
 const ToggleMenu: React.FC<ToogleMenuProps> = ({ categories }) => {
-
   return (
     <>
       <Sheet>
@@ -51,7 +54,7 @@ const ToggleMenu: React.FC<ToogleMenuProps> = ({ categories }) => {
             </SheetDescription>
           </SheetHeader>
 
-          <div className="my-8 h-[70vh] overflow-auto">
+          <div className="my-8 h-[50vh] overflow-auto">
             {categories.map((item) => (
               <React.Fragment key={item.id}>
                 {item.children?.length !== 0 ? (
@@ -88,7 +91,7 @@ const ToggleMenu: React.FC<ToogleMenuProps> = ({ categories }) => {
                               >
                                 <div className="flex items-center gap-4">
                                   <ThickArrowRightIcon className="w-2 h-2 hover:text-rose-500" />
-                                <p>{x.label}</p>
+                                  <p>{x.label}</p>
                                 </div>
                               </SheetClose>
                             </Link>
