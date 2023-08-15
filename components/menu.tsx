@@ -54,7 +54,7 @@ const ToggleMenu: React.FC<ToogleMenuProps> = ({ categories }) => {
             </SheetDescription>
           </SheetHeader>
 
-          <div className="my-8 h-[50vh] overflow-auto">
+          <div className="my-8 h-[60vh] sm:h-[72vh] overflow-auto">
             {categories.map((item) => (
               <React.Fragment key={item.id}>
                 {item.children?.length !== 0 ? (
@@ -62,14 +62,14 @@ const ToggleMenu: React.FC<ToogleMenuProps> = ({ categories }) => {
                     type="single"
                     key={item.id}
                     collapsible
-                    className="w-full bn"
+                    className="w-full bn border-0"
                   >
-                    <AccordionItem value={item.id} className="border-b-0">
+                    <AccordionItem value={item.id} className="border-0">
                       <AccordionTrigger
                         className={buttonVariants({
                           variant: "ghost",
                           className:
-                            "hover:no-underline justify-between text-base",
+                            "hover:no-underline justify-between text-base border-0",
                         })}
                       >
                         <div className="flex items-center gap-4">
