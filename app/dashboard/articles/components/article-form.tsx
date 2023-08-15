@@ -6,10 +6,10 @@ import { Article, Case, Category, Recruitment, Tag } from "@prisma/client";
 import { AlertModal } from "@/components/alert-modal";
 import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
-import { Form, FormItem, FormLabel } from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Trash } from "lucide-react";
+import { PlusIcon, Trash } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -23,6 +23,7 @@ import ImageUpload from "@/components/image-upload";
 import MultiSelect from "@/components/MultiSelect";
 import { Session } from "next-auth";
 import Input from "@/components/input";
+import CreateTag from "@/components/create-tag";
 
 const formSchema = z.object({
   title: z.string().min(2),
@@ -63,13 +64,13 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
   session,
 }) => {
   const [imageSrc, setImageSrc] = useState(initialData?.image || "");
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const formTitle = initialData ? "Edit article" : "Create article";
   const formDescription = initialData ? "Edit article." : "Add new article";
   const action = initialData ? "Save changes" : "Create";
   const link = "/api/articles";
   const deleteLink = `/api/articles/${initialData?.slug}`;
   const refresh = "/dashboard/articles";
-
   const ref = useRef<EditorJS>();
   const _titleRef = useRef<HTMLTextAreaElement>(null);
   const [isMounted, setIsMounted] = useState<boolean>(false);
@@ -126,7 +127,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
         },
         placeholder: "Type post content here...",
         inlineToolbar: true,
-        data: initialData?.content as any || { blocks: [] },
+        data: (initialData?.content as any) || { blocks: [] },
         tools: {
           header: Header,
           list: List,
@@ -219,24 +220,19 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 w-full"
         >
-          <div className="flex flex-col gap-4">
-            <FormItem className="md:grid md:grid-cols-4 gap-6">
-              <FormLabel className="md:col-span-1 text-end pt-4">
-                Image
-              </FormLabel>
-              <div className="md:col-span-3">
-                <ImageUpload
-                  onChange={(src: string) => setImageSrc(src)}
-                  existingImage={initialData?.image || undefined}
-                />
-              </div>
-            </FormItem>
+          <div className="flex flex-col gap-6">
+            <ImageUpload
+              onChange={(src: string) => setImageSrc(src)}
+              existingImage={initialData?.image || undefined}
+              label="Image"
+            />
             <Select
               form={form}
               label="Category"
               name="categoryId"
               data={categories}
             />
+
             {selectedCategory === "clkk59bsm0007rvrsn6v7u36y" ? (
               <Select form={form} label="Case No" name="caseId" data={cases} />
             ) : null}
@@ -263,7 +259,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
               disabled={loading}
               placeholder="Article description"
             />
-            <div className="mt-6 space-y-2">
+            <div className="space-y-2">
               <Label>Content</Label>
               <div className="prose prose-stone dark:prose-invert bg-slate-50 rounded p-4 sm:p-6 border-[1px]">
                 <TextareaAutosize

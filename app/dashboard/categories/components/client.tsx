@@ -15,9 +15,6 @@ interface categoriesClientProps {
 const CategoriesClient: React.FC<categoriesClientProps> = ({ data }) => {
   const router = useRouter();
 
-  console.log("data: ", data);
-  
-
   return (
     <>
       <div className="flex items-center justify-between">

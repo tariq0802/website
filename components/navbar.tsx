@@ -16,9 +16,37 @@ import NavMenu from "./nav-menu";
 interface NavbarProps {
   news: Category[];
   preparetion: Category[];
+  lawsuit: Category[]
 }
 
-const NavBar: React.FC<NavbarProps> = ({ news, preparetion }) => {
+const more = [
+  {
+    id: "cll2okjsy000frv4frqlubv0o",
+    label: "Contact",
+    title: "contact",
+    slug: "contact",
+    description: "description",
+    createdAt: new Date("2023-08-08T19:14:15.275Z"),
+    image:
+      "https://cgwebsite.s3.ap-south-1.amazonaws.com/images/0064743c-5ffc-488b-a88a-e03e731daa39.jpeg",
+    parentId: null,
+    parent: null,
+  },
+  {
+    id: "cll2ok32o000erv4fl8egljtp",
+    label: "About Us",
+    title: "about us",
+    slug: "about-us",
+    description: "description",
+    createdAt: new Date("2023-08-08T19:14:15.275Z"),
+    image:
+      "https://cgwebsite.s3.ap-south-1.amazonaws.com/images/0064743c-5ffc-488b-a88a-e03e731daa39.jpeg",
+    parentId: null,
+    parent: null,
+  },
+];
+
+const NavBar: React.FC<NavbarProps> = ({ news, preparetion, lawsuit }) => {
   return (
     <Container>
       <div className="flex justify-center items-center">
@@ -44,24 +72,24 @@ const NavBar: React.FC<NavbarProps> = ({ news, preparetion }) => {
               data={preparetion}
               title="গাইডেন্স সমগ্র"
               slug="/preparetion"
-              label="গাইড"
+              label="গাইডেন্স"
+              description="description"
+            />
+            <NavMenu
+              data={lawsuit}
+              title="মামলা মোকদ্দমা"
+              slug="/lawsuit"
+              label="আদালত"
               description="description"
             />
             <NavigationMenuItem>
               <Link href="/job-listings" legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  নিয়োগসূচী 
+                  নিয়োগ
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link href="/case-listing" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  মামলা
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-            <NavMenu data={preparetion} label="অন্যান্য" />
+            <NavMenu data={more} label="অন্যান্য" />
           </NavigationMenuList>
         </NavigationMenu>
       </div>

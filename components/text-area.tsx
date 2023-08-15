@@ -29,11 +29,11 @@ const TextArea = <T extends FieldValues>({
         control={form.control}
         name={name}
         render={({ field }) => (
-          <FormItem className="md:grid md:grid-cols-4 gap-6 ">
-            <FormLabel className="md:col-span-1 text-end pt-4">
+          <FormItem className="grid grid-cols-9 md:gap-6 gap-3">
+            <FormLabel className="col-span-2 text-end">
               {label}
             </FormLabel>
-            <FormControl className="md:col-span-3">
+            <FormControl className="col-span-7">
               <Textarea
                 disabled={disabled}
                 placeholder={placeholder ? placeholder : "Description"}

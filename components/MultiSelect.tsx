@@ -22,8 +22,9 @@ import {
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
-import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
+import { CaretSortIcon, CheckIcon, PlusIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
+import CreateTag from "./create-tag";
 
 interface SelectProps<T extends FieldValues> {
   form: UseFormReturn<T>;
@@ -38,6 +39,7 @@ const MultiSelect = <T extends FieldValues>({
   data,
 }: SelectProps<T>) => {
   const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
     <>
@@ -45,14 +47,12 @@ const MultiSelect = <T extends FieldValues>({
         control={form.control}
         name={name}
         render={({ field }) => (
-          <FormItem className="md:grid md:grid-cols-4 md:gap-6 gap-1 flex flex-col">
-            <FormLabel className="md:col-span-1 md:text-end pt-4">
-              {label}
-            </FormLabel>
+          <FormItem className="grid grid-cols-9 md:gap-6 gap-3">
+            <FormLabel className="col-span-2 text-end">{label}</FormLabel>
 
             <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild>
-                <FormControl className="md:col-span-3 w-full">
+                <FormControl className="col-span-7 w-full">
                   <Button
                     variant="outline"
                     role="combobox"
@@ -95,7 +95,7 @@ const MultiSelect = <T extends FieldValues>({
                     className="h-9"
                   />
                   <CommandEmpty>No category found.</CommandEmpty>
-                  <CommandGroup>
+                  <CommandGroup className="h-60 overflow-auto">
                     {data.map((item) => (
                       <CommandItem
                         value={item.label}
@@ -123,6 +123,22 @@ const MultiSelect = <T extends FieldValues>({
                       </CommandItem>
                     ))}
                   </CommandGroup>
+                  <Button
+                    variant="outline"
+                    onClick={() => setIsOpen(!isOpen)}
+                    className={cn(
+                      "w-[275px] bg-slate-200 justify-between h-fit text-slate-800 rounded-none"
+                    )}
+                  >
+                    <PlusIcon className="h-4 w-4" />
+                    Add new...
+                  </Button>
+                  {isOpen && (
+                    <CreateTag
+                      open={isOpen}
+                      onClose={() => setIsOpen(!isOpen)}
+                    />
+                  )}
                 </Command>
               </PopoverContent>
             </Popover>

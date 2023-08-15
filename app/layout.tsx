@@ -28,17 +28,20 @@ export default async function RootLayout({
   const preparetion = await db.category.findMany({
     where: { parentId: "cll2paocr0005rvg0b96feotc" },
   });
+  const lawsuit = await db.category.findMany({
+    where: { parentId: "cll2pdmkw0007rvg01l989vr7" },
+  });
 
   return (
     <html lang="en">
       <body className={noto.className}>
         <Provider>
-          <header className="h-16 flex justify-between items-center relative">
-            <Header session={session} />
-          </header>
-          <nav className="bg-slate-800 text-gray-100 sticky top-0 z-50">
-            <NavBar news={news} preparetion={preparetion} />
-          </nav>
+            <header className="h-16 flex justify-between items-center relative">
+              <Header session={session} />
+            </header>
+            <nav className="bg-slate-800 text-gray-100 sticky top-0 z-50">
+              <NavBar news={news} preparetion={preparetion} lawsuit={lawsuit} />
+            </nav>
           <Container>
             <div className="pt-8">{children}</div>
           </Container>

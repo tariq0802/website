@@ -40,14 +40,12 @@ const Select = <T extends FieldValues>({
         control={form.control}
         name={name}
         render={({ field }) => (
-          <FormItem className="md:grid md:grid-cols-4 md:gap-6 gap-1 flex flex-col">
-            <FormLabel className="md:col-span-1 md:text-end pt-4">
-              {label}
-            </FormLabel>
+          <FormItem className="grid grid-cols-9 md:gap-6 gap-3">
+            <FormLabel className="col-span-2 text-end">{label}</FormLabel>
 
             <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild>
-                <FormControl className="md:col-span-3 w-full">
+                <FormControl className="col-span-7 w-full">
                   <Button
                     variant="outline"
                     role="combobox"
@@ -72,7 +70,7 @@ const Select = <T extends FieldValues>({
                     className="h-9"
                   />
                   <CommandEmpty>No category found.</CommandEmpty>
-                  <CommandGroup>
+                  <CommandGroup className="h-60 overflow-auto">
                     {data?.map((item) => (
                       <CommandItem
                         value={item.label}

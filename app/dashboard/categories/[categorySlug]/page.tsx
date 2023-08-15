@@ -19,7 +19,7 @@ const CategoryPage = async ({
   });
 
   return (
-    <div className="flex-col">
+    <div className="flex flex-col">
       <div className="flex-1 space-y-4">
         <CategoryForm initialData={category} parents={parents} />
       </div>

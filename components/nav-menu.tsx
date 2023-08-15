@@ -31,7 +31,7 @@ const NavMenu: React.FC<NavMenuProps> = ({
         {label}
       </NavigationMenuTrigger>
       <NavigationMenuContent className="">
-        <ul className="grid w-[355px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+        <ul className="grid w-[355px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] right-0">
           {title && description && slug && (
             <li className="row-span-3 mb-2">
               <NavigationMenuLink asChild>
