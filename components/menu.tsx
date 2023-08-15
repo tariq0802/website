@@ -51,7 +51,7 @@ const ToggleMenu: React.FC<ToogleMenuProps> = ({ categories }) => {
             </SheetDescription>
           </SheetHeader>
 
-          <div className="my-8 h-[74vh] overflow-auto">
+          <div className="my-8 h-[70vh] overflow-auto">
             {categories.map((item) => (
               <React.Fragment key={item.id}>
                 {item.children?.length !== 0 ? (
