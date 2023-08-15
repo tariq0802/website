@@ -1,7 +1,7 @@
 import NavBar from "@/components/navbar";
 import "./globals.css";
 import type { Metadata } from "next";
-import { Noto_Serif_Bengali } from "next/font/google";
+import { Inter, Noto_Serif_Bengali } from "next/font/google";
 import Container from "@/components/container";
 import Provider from "@/providers/provider";
 import { getAuthSession } from "@/lib/auth";
@@ -9,7 +9,11 @@ import { Toaster } from "@/components/ui/toaster";
 import { db } from "@/lib/db";
 import Header from "@/components/header";
 
-const noto = Noto_Serif_Bengali({ subsets: ["bengali"] });
+const noto = Noto_Serif_Bengali({
+  subsets: ["bengali"],
+  variable: "--font-noto",
+});
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,6 +26,10 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await getAuthSession();
+  const categories = await db.category.findMany({
+    orderBy: { createdAt: "desc" },
+    include: { children: true },
+  });
   const news = await db.category.findMany({
     where: { parentId: "cll2p69yq0001rvg050ck12j2" },
   });
@@ -34,14 +42,14 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={noto.className}>
+      <body className={`${noto.variable} ${inter.variable}`}>
         <Provider>
-            <header className="h-16 flex justify-between items-center relative">
-              <Header session={session} />
-            </header>
-            <nav className="bg-slate-800 text-gray-100 sticky top-0 z-50">
-              <NavBar news={news} preparetion={preparetion} lawsuit={lawsuit} />
-            </nav>
+          <header className="h-16 flex justify-between items-center relative">
+            <Header session={session} categories={categories} />
+          </header>
+          <nav className="bg-slate-800 bn text-gray-100 sticky top-0 z-50">
+            <NavBar news={news} preparetion={preparetion} lawsuit={lawsuit} />
+          </nav>
           <Container>
             <div className="pt-8">{children}</div>
           </Container>

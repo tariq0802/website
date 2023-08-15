@@ -77,6 +77,14 @@
   }
 }
 
+.bn {
+  font-family: var(--font-noto);
+}
+
+.en {
+  font-family: var(--font-inter);
+}
+
 .editorContent {
   font-family: "Noto Serif Bengali", serif;
 }

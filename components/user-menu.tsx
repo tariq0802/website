@@ -120,7 +120,6 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
                         })}
                       >
                         <p>{item.title}</p>
-                        {""}
                       </SheetClose>
                     </Link>
                   ))}

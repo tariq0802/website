@@ -15,7 +15,6 @@ interface ArticlesClientProps {
 const ArticlesClient: React.FC<ArticlesClientProps> = ({ data }) => {
   const router = useRouter();
 
-
   return (
     <>
       <div className="flex items-center justify-between">

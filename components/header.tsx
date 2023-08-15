@@ -8,12 +8,14 @@ import UserMenu from "./user-menu";
 import { LogIn } from "lucide-react";
 import { Session } from "next-auth";
 import { buttonVariants } from "./ui/button";
+import { Category } from "@prisma/client";
 
 interface HeaderProps {
   session: Session | null;
+  categories: (Category & { children: Category[] | null })[];
 }
 
-const Header: React.FC<HeaderProps> = ({ session }) => {
+const Header: React.FC<HeaderProps> = ({ session, categories }) => {
   return (
     <Container>
       <div className="flex justify-between items-center">
@@ -36,7 +38,7 @@ const Header: React.FC<HeaderProps> = ({ session }) => {
             </Link>
           )}
 
-          <ToggleMenu />
+          <ToggleMenu categories={categories} />
         </div>
       </div>
     </Container>

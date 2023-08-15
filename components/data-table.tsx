@@ -11,7 +11,14 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 import { Input } from "./ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "./ui/table";
 import { Button } from "./ui/button";
 
 interface DataTableProps<TData, TValue> {
@@ -80,7 +87,7 @@ export function DataTable<TData, TValue>({
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="bn">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

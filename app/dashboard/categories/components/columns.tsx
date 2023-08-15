@@ -36,16 +36,12 @@ export const columns: ColumnDef<CategoryColumn>[] = [
   {
     accessorKey: "parent",
     header: "Parent",
-    cell: ({ row }) => (row.original.parent?.label)
+    cell: ({ row }) => row.original.parent?.label,
   },
   {
     accessorKey: "createdAt",
     header: "Created",
     cell: (info) => formatTimeToNow(info.row.original.createdAt),
-  },
-  {
-    accessorKey: "description",
-    header: "Description",
   },
   {
     id: "actions",
