@@ -1,7 +1,6 @@
 "use client";
 
 import { LogOut, Menu, X } from "lucide-react";
-import { useState } from "react";
 import { Button, buttonVariants } from "./ui/button";
 import {
   Sheet,
@@ -22,9 +21,9 @@ import {
 import Link from "next/link";
 import { Category } from "@prisma/client";
 import React from "react";
-import { Separator } from "./ui/separator";
 import {
   ComponentBooleanIcon,
+  HomeIcon,
   ThickArrowRightIcon,
   ValueIcon,
 } from "@radix-ui/react-icons";
@@ -55,6 +54,19 @@ const ToggleMenu: React.FC<ToogleMenuProps> = ({ categories }) => {
           </SheetHeader>
 
           <div className="my-8 h-[60vh] sm:h-[72vh] overflow-auto">
+            <Link href="/">
+              <SheetClose
+                className={buttonVariants({
+                  variant: "ghost",
+                  className: "font-normal w-full justify-between bn",
+                })}
+              >
+                <div className="flex items-center gap-4">
+                  <HomeIcon className="h-4 w-4" />
+                  <p className="text-base">মলাট</p>
+                </div>
+              </SheetClose>
+            </Link>
             {categories.map((item) => (
               <React.Fragment key={item.id}>
                 {item.children?.length !== 0 ? (
@@ -77,7 +89,6 @@ const ToggleMenu: React.FC<ToogleMenuProps> = ({ categories }) => {
                           {item.label}
                         </div>
                       </AccordionTrigger>
-                      {/* <Separator /> */}
                       <AccordionContent>
                         {item.children &&
                           item.children.map((x, index) => (
@@ -114,7 +125,6 @@ const ToggleMenu: React.FC<ToogleMenuProps> = ({ categories }) => {
                           <p className="text-base">{item.label}</p>
                         </div>
                       </SheetClose>
-                      {/* <Separator /> */}
                     </Link>
                   )
                 )}

@@ -13,6 +13,7 @@ const ArticlePage = async ({ params }: { params: { articleSlug: string } }) => {
 
   const categories = await db.category.findMany({
     orderBy: { label: "asc" },
+    include: { children: true },
   });
   const cases = await db.case.findMany({
     orderBy: { label: "asc" },
@@ -29,7 +30,9 @@ const ArticlePage = async ({ params }: { params: { articleSlug: string } }) => {
       <div className="flex-1 space-y-4">
         <ArticleForm
           initialData={article}
-          categories={categories}
+          categories={categories.filter(
+            (category) => !category?.children || category.children.length === 0
+          )}
           cases={cases}
           recruitments={recruitments}
           tags={tags}

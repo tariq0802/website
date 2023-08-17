@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PlusIcon, Trash } from "lucide-react";
+import { Trash } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -23,7 +23,6 @@ import ImageUpload from "@/components/image-upload";
 import MultiSelect from "@/components/MultiSelect";
 import { Session } from "next-auth";
 import Input from "@/components/input";
-import CreateTag from "@/components/create-tag";
 
 const formSchema = z.object({
   title: z.string().min(2),
@@ -235,7 +234,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
             {selectedCategory === "clkk59bsm0007rvrsn6v7u36y" ? (
               <Select form={form} label="Case No" name="caseId" data={cases} />
             ) : null}
-            {selectedCategory === "clkk59xej0008rvrsray3qimk" ? (
+            {selectedCategory === "cll2n4hmm0005rv4fmgg9iazb" ? (
               <Select
                 form={form}
                 label="Recruitment"

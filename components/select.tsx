@@ -51,7 +51,7 @@ const Select = <T extends FieldValues>({
                     role="combobox"
                     aria-expanded={open}
                     className={cn(
-                      "w-[275px] justify-between",
+                      "w-[275px] justify-between bn",
                       !field.value && "text-muted-foreground"
                     )}
                   >
@@ -63,7 +63,7 @@ const Select = <T extends FieldValues>({
                 </FormControl>
               </PopoverTrigger>
 
-              <PopoverContent className="w-[275px] p-0">
+              <PopoverContent className="w-[275px] p-0 bn">
                 <Command>
                   <CommandInput
                     placeholder="Search category..."
