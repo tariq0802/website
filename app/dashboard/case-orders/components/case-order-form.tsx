@@ -62,8 +62,14 @@ const CaseOrderForm: React.FC<CaseOrderFormProps> = ({
 
   useEffect(() => {
     const slugifiedLabel = slugify(label, { lower: true });
-    form.setValue("slug", slugifiedLabel);
-  }, [form, label]);
+    const selectedCase = cases.find((c) => c.id === form.getValues("caseId"));
+
+    if (selectedCase) {
+      const caseNameSlug = slugify(selectedCase.label, { lower: true });
+      const combinedSlug = `${caseNameSlug}-${slugifiedLabel}`;
+      form.setValue("slug", combinedSlug);
+    }
+  }, [cases, form, label]);
 
   const link = "/api/case-orders";
   const deleteLink = `/api/case-orders/${initialData?.slug}`;
@@ -112,6 +118,7 @@ const CaseOrderForm: React.FC<CaseOrderFormProps> = ({
           className="space-y-8 w-full"
         >
           <div className="flex flex-col gap-4">
+            <Select form={form} label="Case" name="caseId" data={cases} />
             <Input
               form={form}
               name="label"
@@ -126,7 +133,6 @@ const CaseOrderForm: React.FC<CaseOrderFormProps> = ({
               disabled={loading}
               placeholder="Case order link"
             />
-            <Select form={form} label="Case" name="caseId" data={cases} />
             <DateInput form={form} name="orderDate" label="Order date" />
             <Button disabled={isLoading} className="ml-auto" type="submit">
               {action}

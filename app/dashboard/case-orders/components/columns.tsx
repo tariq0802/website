@@ -27,13 +27,14 @@ export const columns: ColumnDef<OrderColumn>[] = [
     cell: (info) => formatTimeToNow(info.row.original.createdAt),
   },
   {
-    accessorKey: "order",
-    header: "Link",
+    accessorKey: "lebel",
+    header: "Case No",
+    cell: ({ row }) => row.original.case.label,
   },
   {
     accessorKey: "orderDate",
     header: "Order date",
-    cell: ({row}) => format(row.original.orderDate, "PPP")
+    cell: ({ row }) => format(row.original.orderDate, "PPP"),
   },
   {
     id: "actions",
