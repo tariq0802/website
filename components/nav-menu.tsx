@@ -27,11 +27,11 @@ const NavMenu: React.FC<NavMenuProps> = ({
 }) => {
   return (
     <NavigationMenuItem>
-      <NavigationMenuTrigger className="bg-transparent rounded-none px-2">
+      <NavigationMenuTrigger className="bg-transparent rounded-none px-2 md:text-md">
         {label}
       </NavigationMenuTrigger>
       <NavigationMenuContent className="">
-        <ul className="grid w-[355px] p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] right-0">
+        <ul className="grid w-[355px] p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] right-0 gap-4">
           {title && description && slug && (
             <li className="row-span-3 mb-2">
               <NavigationMenuLink asChild>

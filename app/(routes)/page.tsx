@@ -1,8 +1,12 @@
 import BigCard from "@/components/big-card";
 import Orders from "@/components/orders";
 import Recruitment from "@/components/recruitment";
+import SimpleCard from "@/components/simple-card";
 import SmallCard from "@/components/small-card";
+import { GUIDANCE_ID, NEWS_ID } from "@/lib/constants";
 import { db } from "@/lib/db";
+import NewsSection from "./components/news-section";
+import GuidanceSection from "./components/guidance-section";
 
 const HomePage = async () => {
   const recruitments = await db.recruitment.findMany({
@@ -24,34 +28,18 @@ const HomePage = async () => {
   });
   return (
     <main>
-      <section className="md:grid grid-cols-3 gap-6 space-y-6 md:space-y-0">
+      <section className="md:grid grid-cols-3 gap-6 md:gap-7 lg:gap-10 space-y-6 md:space-y-0">
         <div className="col-span-2 space-y-3">
-          {/* BigCard */}
           <BigCard data={articles.slice(0, 1)} />
-
-          {/* SmallCard */}
           <SmallCard data={articles.slice(1, 3)} />
         </div>
         <div className="col-span-1 space-y-8">
-          {/* Recruitment */}
           <Recruitment recruitments={recruitments} />
-
-          {/* Orders */}
           <Orders orders={orders} />
         </div>
       </section>
-
-      {/* Sandesh Section */}
-      <section className="py-4">
-        <div className="flex bg-slate-700 px-3 pt-1 mb-4">
-          <h2 className="bn text-lg font-bold text-white">সন্দেশ</h2>
-        </div>
-        <SmallCard
-          data={articles.filter(
-            (x) => x.category.parentId === "cll2p69yq0001rvg050ck12j2"
-          )}
-        />
-      </section>
+      <NewsSection articles={articles} />
+      <GuidanceSection articles={articles} />
     </main>
   );
 };

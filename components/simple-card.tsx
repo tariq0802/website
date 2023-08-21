@@ -2,11 +2,10 @@
 
 import { formatTimeToNow } from "@/lib/utils";
 import { Article, Category, User } from "@prisma/client";
-import { HeartIcon, ChatBubbleIcon } from "@radix-ui/react-icons";
-import Image from "next/image";
+import { ChatBubbleIcon, HeartIcon } from "@radix-ui/react-icons";
 import { Separator } from "./ui/separator";
 
-interface SmallCardProps {
+interface SimpleCardProps {
   data: (Article & {
     category: Category & {
       parent: Category | null;
@@ -15,27 +14,17 @@ interface SmallCardProps {
   })[];
 }
 
-const SmallCard: React.FC<SmallCardProps> = ({ data }) => {
+const SimpleCard: React.FC<SimpleCardProps> = ({ data }) => {
   return (
     <div className="shadow">
       {data.map((item) => (
         <div key={item.id} className="">
           <div className="flex w-full py-1">
-            <div className="relative w-[60%] m-3 mr-0">
-              <Image
-                src={item.image || "/images/placeholder.jpg"}
-                alt="Photo"
-                fill
-                style={{ objectFit: "cover" }}
-              />
-            </div>
             <div className="p-3 flex flex-col gap-1 w-full">
-              <div className="flex justify-between text-sm">
-                <p className="bn text-sky-800 font-semibold">
-                  {item.category.label}
-                </p>
-              </div>
-              <h3 className="bn text-md font-bold text-slate-600 h-[44px] overflow-hidden">
+              <p className="bn text-sky-800 text-sm font-medium">
+                {item.category.label}
+              </p>
+              <h3 className="bn font-semibold text-md text-slate-600 h-[20px] overflow-hidden">
                 {item.title}
               </h3>
               <p className="text-semibold text-xs text-muted-foreground">
@@ -64,4 +53,4 @@ const SmallCard: React.FC<SmallCardProps> = ({ data }) => {
     </div>
   );
 };
-export default SmallCard;
+export default SimpleCard;

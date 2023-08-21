@@ -29,10 +29,10 @@ const BigCard: React.FC<BigCardProps> = ({ data }) => {
           </div>
           <div className="p-3 flex flex-col gap-2">
             <div className="flex gap-2">
-              <p className="bn text-sky-600 font-semibold">
+              <p className="bn text-sky-700 text-sm font-semibold">
                 {item.category.parent?.label}
               </p>
-              <p className="bn text-rose-500 font-semibold">
+              <p className="bn text-emerald-700 text-sm font-semibold">
                 {item.category.label}
               </p>
             </div>

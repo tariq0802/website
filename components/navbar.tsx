@@ -83,7 +83,7 @@ const NavBar: React.FC<NavbarProps> = ({ news, preparetion, lawsuit }) => {
               description="description"
             />
             <NavigationMenuItem>
-              <Link href="/job-listings" legacyBehavior passHref>
+              <Link href="/job-listings" legacyBehavior className="md:text-md">
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                   নিয়োগ
                 </NavigationMenuLink>
