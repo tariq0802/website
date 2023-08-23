@@ -51,8 +51,10 @@ const HomePage = async () => {
           <Orders orders={orders} />
         </div>
       </section>
-      <NewsSection articles={articles} />
-      <GuidanceSection articles={articles} />
+      <div className="space-y-8 mt-8">
+        <NewsSection articles={articles} />
+        <GuidanceSection articles={articles} />
+      </div>
     </main>
   );
 };

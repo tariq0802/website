@@ -29,7 +29,7 @@ const NewsSection: React.FC<NewsSectionProps> = ({ articles }) => {
   console.log(articles);
 
   return (
-    <section>
+    <section className="space-y-6">
       <div className="flex bg-slate-700 px-3 pt-1 mb-2">
         <Link href={`/${NEWS_SLUG}`}>
           <h2 className="bn text-xl font-bold text-white">সন্দেশ</h2>
