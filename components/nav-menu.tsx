@@ -41,7 +41,7 @@ const NavMenu: React.FC<NavMenuProps> = ({
                 >
                   <div className="flex gap-10 items-center">
                     <Icons.logo className="h-10 w-10" />
-                    <div className="text-base font-semibold md:text-lg ">
+                    <div className="font-semibold md:text-lg ">
                       {title}
                       <p className="text-xs leading-tight text-muted-foreground">
                         {description}
@@ -53,11 +53,7 @@ const NavMenu: React.FC<NavMenuProps> = ({
             </li>
           )}
           {data.map((item) => (
-            <ListItem
-              key={item.id}
-              href={`/${item.slug}`}
-              title={item.label}
-            >
+            <ListItem key={item.id} href={`/${item.slug}`} title={item.label}>
               <span className="text-xs">{item.description}</span>
             </ListItem>
           ))}
