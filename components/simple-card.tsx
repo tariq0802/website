@@ -28,7 +28,7 @@ const SimpleCard: React.FC<SimpleCardProps> = ({ data }) => {
                 </p>
               </Link>
               <Link href={`/${item.category.slug}/${item.slug}`}>
-                <h3 className="bn font-semibold text-md text-slate-600 h-[20px] overflow-hidden">
+                <h3 className="bn font-bold text-base text-slate-600 h-[20px] overflow-hidden">
                   {item.title}
                 </h3>
               </Link>

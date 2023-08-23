@@ -16,7 +16,7 @@ import NavMenu from "./nav-menu";
 interface NavbarProps {
   news: Category[];
   preparetion: Category[];
-  lawsuit: Category[]
+  lawsuit: Category[];
 }
 
 const more = [
@@ -71,7 +71,7 @@ const NavBar: React.FC<NavbarProps> = ({ news, preparetion, lawsuit }) => {
             <NavMenu
               data={preparetion}
               title="গাইডেন্স সমগ্র"
-              slug="/preparetion"
+              slug="/guidance"
               label="গাইডেন্স"
               description="description"
             />

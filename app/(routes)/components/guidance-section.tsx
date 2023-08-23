@@ -41,7 +41,7 @@ const GuidanceSection: React.FC<GuidanceSectionProps> = ({ articles }) => {
           <h2 className="bn text-xl font-bold text-white">গাইডেন্স</h2>
         </Link>
       </div>
-      <div className="md:grid md:grid-cols-2 flex flex-col gap-10">
+      <div className="md:grid md:grid-cols-2 flex flex-col gap-8 gap-y-10">
         <div className="md:col-span-1">
           <div className="flex items-center px-3 mb-2 border-l-8 border-rose-500">
             <Link href={`/${GENERAL_KNOWLEDGE_SLUG}`}>

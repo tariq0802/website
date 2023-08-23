@@ -17,11 +17,11 @@ module.exports = {
     },
     extend: {
       fontSize: {
-        xs: "13px",
-        sm: "14px",
-        md: "15px",
-        lg: "18px",
-        xl: "20px",
+        xs: "12px",
+        sm: "13px",
+        md: "17px",
+        lg: "19px",
+        xl: "22px",
       },
       colors: {
         border: "hsl(var(--border))",
