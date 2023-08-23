@@ -26,7 +26,7 @@ const style = {
     fontSize: "1rem",
     lineHeight: "1.5rem",
     margin: "0 0 1.25rem",
-    color: "#343752de",
+    color: "#161725e6",
   },
 };
 
