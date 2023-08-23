@@ -23,7 +23,7 @@ const renderers = {
 
 const style = {
   paragraph: {
-    fontSize: "1rem",
+    fontSize: "1.1rem",
     lineHeight: "1.5rem",
     margin: "0 0 1.25rem",
     color: "#161725e6",
