@@ -49,24 +49,21 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({ params }) => {
 
   return (
     <>
-      <div className="bg-gray-200 h-60 mb-8 w-full relative">
+      <div className="bg-gray-200 h-44 md:h-60 mb-8 w-full relative">
         <Image
           src={parent.image || "/images/placeholder.jpg"}
           alt="Photo"
           fill
           style={{ objectFit: "cover" }}
         />
-        <div className="absolute left-20 top-20">
-          <h3 className=" text-white bn text-3xl font-bold">
-            {parent.label}
-          </h3>
+        <div className="absolute md:left-10 md:bottom-8 left-8 bottom-6">
+          <h3 className=" text-white bn text-3xl font-bold">{parent.label}</h3>
           <p className="text-white text-lg opacity-70">{parent.description}</p>
         </div>
       </div>
       <div className="flex flex-col md:grid grid-cols-3 gap-6 gap-y-10">
         <div className="md:col-span-2">
-          <BigCard data={articles.slice(0, 1)} />
-          <SmallCard data={articles.slice(1, 5)} />
+          <SmallCard data={articles.slice(0, 5)} />
           <SimpleCard data={articles.slice(5)} />
         </div>
         <div className="md:col-span-1 bg-slate-50 min-h-[100vh]">
