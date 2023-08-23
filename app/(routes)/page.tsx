@@ -1,12 +1,10 @@
-import BigCard from "@/components/big-card";
 import Orders from "@/components/orders";
 import Recruitment from "@/components/recruitment";
-import SimpleCard from "@/components/simple-card";
 import SmallCard from "@/components/small-card";
-import { GUIDANCE_ID, NEWS_ID } from "@/lib/constants";
 import { db } from "@/lib/db";
 import NewsSection from "./components/news-section";
 import GuidanceSection from "./components/guidance-section";
+import BigCard from "@/components/big-card";
 
 const HomePage = async () => {
   const recruitments = await db.recruitment.findMany({
@@ -23,13 +21,28 @@ const HomePage = async () => {
 
   const articles = await db.article.findMany({
     orderBy: { createdAt: "desc" },
-    include: { category: { include: { parent: true } }, author: true },
-    take: 10,
+    include: {
+      category: {
+        select: {
+          label: true,
+          slug: true,
+          parent: {
+            select: {
+              label: true,
+              slug: true,
+            },
+          },
+        },
+      },
+      author: { select: { name: true } },
+    },
+    take: 50,
   });
+
   return (
     <main>
       <section className="md:grid grid-cols-3 gap-6 md:gap-7 lg:gap-10 space-y-6 md:space-y-0">
-        <div className="col-span-2 space-y-3">
+        <div className="col-span-2 space-y-3 mb-4">
           <BigCard data={articles.slice(0, 1)} />
           <SmallCard data={articles.slice(1, 3)} />
         </div>

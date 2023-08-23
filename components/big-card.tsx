@@ -4,13 +4,14 @@ import { formatTimeToNow } from "@/lib/utils";
 import { Article, Category, User } from "@prisma/client";
 import { ChatBubbleIcon, HeartIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
+import Link from "next/link";
 
 interface BigCardProps {
   data: (Article & {
-    category: Category & {
-      parent: Category | null;
+    category: { slug: string; label: string } & {
+      parent: { slug: string; label: string } | null;
     };
-    author: User;
+    author: { name: string | null };
   })[];
 }
 
@@ -19,26 +20,36 @@ const BigCard: React.FC<BigCardProps> = ({ data }) => {
     <div>
       {data.map((item) => (
         <div key={item.id} className="shadow">
-          <div className="relative h-52 w-full">
-            <Image
-              src={item.image || "/images/placeholder.jpg"}
-              alt="Photo"
-              fill
-              style={{ objectFit: "cover" }}
-            />
-          </div>
+          <Link href={`/${item.category.slug}/${item.slug}`}>
+            <div className="relative h-52 w-full">
+              <Image
+                src={item.image || "/images/placeholder.jpg"}
+                alt="Photo"
+                fill
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+          </Link>
           <div className="p-3 flex flex-col gap-2">
             <div className="flex gap-2">
-              <p className="bn text-sky-700 text-sm font-semibold">
-                {item.category.parent?.label}
-              </p>
-              <p className="bn text-emerald-700 text-sm font-semibold">
-                {item.category.label}
-              </p>
+              {item.category.parent && (
+                <Link href={`/${item.category.parent.slug}`}>
+                  <p className="bn text-sky-700 font-semibold">
+                    {item.category.parent?.label}
+                  </p>
+                </Link>
+              )}
+              <Link href={`/${item.category.slug}`}>
+                <p className="bn text-emerald-700 font-semibold">
+                  {item.category.label}
+                </p>
+              </Link>
             </div>
-            <h3 className="bn text-xl font-bold text-slate-600">
-              {item.title}
-            </h3>
+            <Link href={`/${item.category.slug}/${item.slug}`}>
+              <h3 className="bn text-xl font-bold text-slate-600">
+                {item.title}
+              </h3>
+            </Link>
             <p className="text-semibold text-muted-foreground">
               {item.author.name}
             </p>

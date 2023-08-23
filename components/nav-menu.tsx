@@ -55,7 +55,7 @@ const NavMenu: React.FC<NavMenuProps> = ({
           {data.map((item) => (
             <ListItem
               key={item.id}
-              href={`/news/${item.slug}`}
+              href={`/${item.slug}`}
               title={item.label}
             >
               <span className="text-xs">{item.description}</span>

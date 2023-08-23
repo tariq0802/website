@@ -1,16 +1,17 @@
 "use client";
 
 import { formatTimeToNow } from "@/lib/utils";
-import { Article, Category, User } from "@prisma/client";
+import { Article } from "@prisma/client";
 import { ChatBubbleIcon, HeartIcon } from "@radix-ui/react-icons";
 import { Separator } from "./ui/separator";
+import Link from "next/link";
 
 interface SimpleCardProps {
   data: (Article & {
-    category: Category & {
-      parent: Category | null;
+    category: { slug: string; label: string } & {
+      parent: { slug: string; label: string } | null;
     };
-    author: User;
+    author: { name: string | null };
   })[];
 }
 
@@ -21,12 +22,16 @@ const SimpleCard: React.FC<SimpleCardProps> = ({ data }) => {
         <div key={item.id} className="">
           <div className="flex w-full py-1">
             <div className="p-3 flex flex-col gap-1 w-full">
-              <p className="bn text-sky-800 text-sm font-medium">
-                {item.category.label}
-              </p>
-              <h3 className="bn font-semibold text-md text-slate-600 h-[20px] overflow-hidden">
-                {item.title}
-              </h3>
+              <Link href={`/${item.category.slug}`}>
+                <p className="bn text-sky-800 text-sm font-medium">
+                  {item.category.label}
+                </p>
+              </Link>
+              <Link href={`/${item.category.slug}/${item.slug}`}>
+                <h3 className="bn font-semibold text-md text-slate-600 h-[20px] overflow-hidden">
+                  {item.title}
+                </h3>
+              </Link>
               <p className="text-semibold text-xs text-muted-foreground">
                 {item.author.name}
               </p>
