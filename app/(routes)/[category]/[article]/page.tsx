@@ -1,3 +1,4 @@
+import EditorOutput from "@/components/output";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { db } from "@/lib/db";
@@ -43,7 +44,7 @@ const ArticlePage: React.FC<ArticlePageProps> = async ({ params }) => {
             {article.category.label}
           </p>
         </Link>
-        <Separator className="mb-4"/>
+        <Separator className="mb-4" />
         <h3 className="text-slate-600 text-2xl md:text-3xl font-bold">
           {article.title}
         </h3>
@@ -96,7 +97,9 @@ const ArticlePage: React.FC<ArticlePageProps> = async ({ params }) => {
 
         <Separator className="my-4" />
 
-        <div>content</div>
+        <EditorOutput content={article.content} />
+
+        <Separator className="my-4" />
       </div>
       <div className="md:col-span-1 bg-slate-50 min-h-[100vh]">
         <div className="flex bg-slate-700 px-3 pt-1">
