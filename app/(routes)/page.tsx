@@ -51,7 +51,7 @@ const HomePage = async () => {
           <Orders orders={orders} />
         </div>
       </section>
-      <div className="space-y-8 mt-8">
+      <div className="space-y-10 mt-10">
         <NewsSection articles={articles} />
         <GuidanceSection articles={articles} />
       </div>

@@ -29,14 +29,14 @@ const NewsSection: React.FC<NewsSectionProps> = ({ articles }) => {
   console.log(articles);
 
   return (
-    <section className="space-y-6">
-      <div className="flex bg-slate-700 px-3 pt-1 mb-2">
+    <section>
+      <div className="flex bg-slate-700 px-3 pt-1 my-6">
         <Link href={`/${NEWS_SLUG}`}>
           <h2 className="bn text-xl font-bold text-white">সন্দেশ</h2>
         </Link>
       </div>
-      <div className="md:grid grid-cols-2 gap-6">
-        <div className="md:col-span-1 my-4">
+      <div className="md:grid grid-cols-2 flex flex-col gap-10">
+        <div className="md:col-span-1">
           <div className="flex items-center px-3 mb-2 border-l-8 border-rose-500">
             <Link href={`/${RECRUITMENT_UPDATE_SLUG}`}>
               <h2 className="bn text-lg font-bold text-slate-600">
@@ -60,7 +60,7 @@ const NewsSection: React.FC<NewsSectionProps> = ({ articles }) => {
           </div>
         </div>
 
-        <div className="md:col-span-1 my-4">
+        <div className="md:col-span-1">
           <div className="flex items-center px-3 mb-2 border-l-8 border-sky-500">
             <Link href={`/${LIVE_UPDATE_SLUG}`}>
               <h2 className="bn text-lg font-bold text-slate-600">
@@ -84,7 +84,7 @@ const NewsSection: React.FC<NewsSectionProps> = ({ articles }) => {
           </div>
         </div>
 
-        <div className="md:col-span-1 my-4">
+        <div className="md:col-span-1">
           <div className="flex items-center px-3 mb-2 border-l-8 border-emerald-500">
             <Link href={`/${CASE_UPDATE_SLUG}`}>
               <h2 className="bn text-lg font-bold text-slate-600">
@@ -108,7 +108,7 @@ const NewsSection: React.FC<NewsSectionProps> = ({ articles }) => {
           </div>
         </div>
 
-        <div className="md:col-span-1 my-4">
+        <div className="md:col-span-1">
           <div className="flex items-center px-3 mb-2 border-l-8 border-amber-500">
             <Link href={`/${SELECTED_NEWS_SLUG}`}>
               <h2 className="bn text-lg font-bold text-slate-600">নির্বাচিত</h2>

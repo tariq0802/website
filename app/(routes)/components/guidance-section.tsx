@@ -35,14 +35,14 @@ interface GuidanceSectionProps {
 
 const GuidanceSection: React.FC<GuidanceSectionProps> = ({ articles }) => {
   return (
-    <section className="space-y-6">
-      <div className="flex bg-slate-700 px-3 pt-1 mb-2">
+    <section>
+      <div className="flex bg-slate-700 px-3 pt-1 my-6">
         <Link href={`/${GUIDANCE_SLUG}`}>
           <h2 className="bn text-xl font-bold text-white">গাইডেন্স</h2>
         </Link>
       </div>
-      <div className="md:grid grid-cols-2 gap-6">
-        <div className="md:col-span-1 my-4">
+      <div className="md:grid md:grid-cols-2 flex flex-col gap-10">
+        <div className="md:col-span-1">
           <div className="flex items-center px-3 mb-2 border-l-8 border-rose-500">
             <Link href={`/${GENERAL_KNOWLEDGE_SLUG}`}>
               <h2 className="bn text-lg font-bold text-slate-600">
@@ -66,7 +66,7 @@ const GuidanceSection: React.FC<GuidanceSectionProps> = ({ articles }) => {
           </div>
         </div>
 
-        <div className="md:col-span-1 my-4">
+        <div className="md:col-span-1">
           <div className="flex items-center px-3 mb-2 border-l-8 border-sky-500">
             <Link href={`/${CURRENT_AFFAIRS_SLUG}`}>
               <h2 className="bn text-lg font-bold text-slate-600">
@@ -90,7 +90,7 @@ const GuidanceSection: React.FC<GuidanceSectionProps> = ({ articles }) => {
           </div>
         </div>
 
-        <div className="md:col-span-1 my-4">
+        <div className="md:col-span-1">
           <div className="flex items-center px-3 mb-2 border-l-8 border-emerald-500">
             <Link href={`/${PRIMARY_SLUG}`}>
               <h2 className="bn text-lg font-bold text-slate-600">প্রাইমারি</h2>
@@ -112,7 +112,7 @@ const GuidanceSection: React.FC<GuidanceSectionProps> = ({ articles }) => {
           </div>
         </div>
 
-        <div className="md:col-span-1 my-4">
+        <div className="md:col-span-1">
           <div className="flex items-center px-3 mb-2 border-l-8 border-amber-500">
             <Link href={`/${SCHOOL_SERVICE_SLUG}`}>
               <h2 className="bn text-lg font-bold text-slate-600">
@@ -136,7 +136,7 @@ const GuidanceSection: React.FC<GuidanceSectionProps> = ({ articles }) => {
           </div>
         </div>
 
-        <div className="md:col-span-1 my-4">
+        <div className="md:col-span-1">
           <div className="flex items-center px-3 mb-2 border-l-8 border-cyan-500">
             <Link href={`/${MADRASAH_SERVICE_SLUG}`}>
               <h2 className="bn text-lg font-bold text-slate-600">
@@ -160,7 +160,7 @@ const GuidanceSection: React.FC<GuidanceSectionProps> = ({ articles }) => {
           </div>
         </div>
 
-        <div className="md:col-span-1 my-4">
+        <div className="md:col-span-1">
           <div className="flex items-center px-3 mb-2 border-l-8 border-pink-500">
             <Link href={`/${INTERVIEW_PREPARETION_SLUG}`}>
               <h2 className="bn text-lg font-bold text-slate-600">
@@ -184,7 +184,7 @@ const GuidanceSection: React.FC<GuidanceSectionProps> = ({ articles }) => {
           </div>
         </div>
 
-        <div className="md:col-span-1 my-4">
+        <div className="md:col-span-1">
           <div className="flex items-center px-3 mb-2 border-l-8 border-indigo-500">
             <Link href={`/${MOCK_TEST_SLUG}`}>
               <h2 className="bn text-lg font-bold text-slate-600">মক টেস্ট</h2>
@@ -206,7 +206,7 @@ const GuidanceSection: React.FC<GuidanceSectionProps> = ({ articles }) => {
           </div>
         </div>
 
-        <div className="md:col-span-1 my-4">
+        <div className="md:col-span-1">
           <div className="flex items-center px-3 mb-2 border-l-8 border-slate-500">
             <Link href={`/${CAREER_SLUG}`}>
               <h2 className="bn text-lg font-bold text-slate-600">কেরিয়ার</h2>
