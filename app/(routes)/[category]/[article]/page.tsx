@@ -38,12 +38,12 @@ const ArticlePage: React.FC<ArticlePageProps> = async ({ params }) => {
   return (
     <div className="flex flex-col md:grid grid-cols-3 gap-6 gap-y-10">
       <div className="md:col-span-2 bn">
-        <h6 className="text-md font-bold text-rose-500">
-          {article.category.parent?.label}
-        </h6>
-        <p className="text-base font-semibold text-sky-800 py-1">
-          {article.category.label}
-        </p>
+        <Link href={`/${article.category.slug}`}>
+          <p className="text-base font-semibold text-sky-800 py-1">
+            {article.category.label}
+          </p>
+        </Link>
+        <Separator className="mb-4"/>
         <h3 className="text-slate-600 text-2xl md:text-3xl font-bold">
           {article.title}
         </h3>
