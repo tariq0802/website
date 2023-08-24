@@ -1,4 +1,3 @@
-import BigCard from "@/components/big-card";
 import SimpleCard from "@/components/simple-card";
 import SmallCard from "@/components/small-card";
 import { db } from "@/lib/db";

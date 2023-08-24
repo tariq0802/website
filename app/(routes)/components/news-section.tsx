@@ -26,7 +26,6 @@ interface NewsSectionProps {
 }
 
 const NewsSection: React.FC<NewsSectionProps> = ({ articles }) => {
-  console.log(articles);
 
   return (
     <section>

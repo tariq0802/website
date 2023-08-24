@@ -51,7 +51,7 @@ export default async function RootLayout({
             <NavBar news={news} preparetion={preparetion} lawsuit={lawsuit} />
           </nav>
           <Container>
-            <div className="pt-8">{children}</div>
+            <div className="py-8">{children}</div>
           </Container>
         </Provider>
         <Toaster />

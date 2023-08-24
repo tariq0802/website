@@ -6,6 +6,8 @@ import { formatTimeToNow } from "@/lib/utils";
 import { Facebook, FacebookIcon, Share2, Twitter } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import TagSection from "../../components/tag-section";
+import LikeSection from "../../components/like-section";
 
 interface ArticlePageProps {
   params: {
@@ -19,13 +21,34 @@ const ArticlePage: React.FC<ArticlePageProps> = async ({ params }) => {
     include: {
       category: { include: { parent: true } },
       author: true,
-      tags: true,
+      tags: {
+        select: { id: true, label: true },
+        orderBy: { createdAt: "desc" },
+      },
     },
   });
 
   if (!article) {
     return <div>Not found</div>;
   }
+  const tagIds = article.tags.map((tag) => tag.id);
+  const relatedArticles = await db.article.findMany({
+    where: {
+      tags: {
+        some: {
+          id: {
+            in: tagIds,
+          },
+        },
+      },
+      NOT: {
+        id: article.id,
+      },
+    },
+    orderBy: { createdAt: "desc" },
+    select: { id: true, title: true, image: true },
+    take: 10,
+  });
 
   const roleMappings = {
     USER: "ইউজার",
@@ -68,10 +91,8 @@ const ArticlePage: React.FC<ArticlePageProps> = async ({ params }) => {
           </div>
         </div>
         <div className="flex justify-between">
-          <div className="flex pt-2 items-center gap-2">
-            <Share2 className="h-8 w-8 rounded-full bg-slate-100 p-2 shadow-md text-rose-500" />
-            <Facebook className="h-8 w-8 rounded-full bg-slate-100 p-2 shadow-md text-blue-500" />
-            <Twitter className="h-8 w-8 rounded-full bg-slate-100 p-2 shadow-md text-cyan-500" />
+          <div className="flex items-center gap-2">
+            <LikeSection/>
           </div>
           <div className="text-end text-xs text-muted-foreground">
             <p>
@@ -97,7 +118,25 @@ const ArticlePage: React.FC<ArticlePageProps> = async ({ params }) => {
 
         <Separator className="my-4" />
 
-        <EditorOutput content={article.content} />
+        <EditorOutput
+          content={article.content}
+          suggestion={relatedArticles.slice(0, 2)}
+        />
+
+        <Separator className="my-4" />
+
+        <TagSection tags={article.tags} />
+
+        <Separator className="my-4" />
+
+        <div className="flex justify-between items-center">
+          <p className="text-md font-semibold text-slate-600">শেয়ার করুন:</p>
+          <div className="flex items-center gap-2">
+            <Share2 className="h-8 w-8 rounded-full bg-slate-100 p-2 shadow-md text-rose-500" />
+            <Facebook className="h-8 w-8 rounded-full bg-slate-100 p-2 shadow-md text-blue-500" />
+            <Twitter className="h-8 w-8 rounded-full bg-slate-100 p-2 shadow-md text-cyan-500" />
+          </div>
+        </div>
 
         <Separator className="my-4" />
       </div>
