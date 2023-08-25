@@ -1,11 +1,11 @@
 "use client";
 
 import { formatTimeToNow } from "@/lib/utils";
-import { Article } from "@prisma/client";
 import { HeartIcon, ChatBubbleIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import { Separator } from "./ui/separator";
 import Link from "next/link";
+import { Article } from "@prisma/client";
 
 interface SmallCardProps {
   data: (Article & {
@@ -41,7 +41,7 @@ const SmallCard: React.FC<SmallCardProps> = ({ data }) => {
                 </Link>
               </div>
               <Link href={`/${item.category.slug}/${item.slug}`}>
-                <h3 className="bn text-md font-bold text-slate-600 h-[44px] overflow-hidden">
+                <h3 className="bn text-md font-bold text-slate-600 h-[50px] overflow-hidden">
                   {item.title}
                 </h3>
               </Link>
@@ -60,7 +60,7 @@ const SmallCard: React.FC<SmallCardProps> = ({ data }) => {
                   </div>
                 </div>
                 <p className="text-semibold text-xs text-muted-foreground">
-                  {formatTimeToNow(item.createdAt)}
+                  {formatTimeToNow(new Date(item.createdAt))}
                 </p>
               </div>
             </div>

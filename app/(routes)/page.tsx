@@ -5,6 +5,8 @@ import { db } from "@/lib/db";
 import NewsSection from "./components/news-section";
 import GuidanceSection from "./components/guidance-section";
 import BigCard from "@/components/big-card";
+import { Suspense } from "react";
+import { Loader2 } from "lucide-react";
 
 const HomePage = async () => {
   const recruitments = await db.recruitment.findMany({
