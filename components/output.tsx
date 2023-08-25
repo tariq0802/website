@@ -40,9 +40,7 @@ const EditorOutput: FC<EditorOutputProps> = ({ content, suggestion }) => {
 
   updatedBlocks.splice(middleBlockIndex + 1, 0, {
     id: "articleId",
-    data: {
-      cards: suggestion,
-    },
+    data: suggestion,
     type: "card",
     extraClass: "additional-content",
   });

@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import TagSection from "../../components/tag-section";
 import LikeSection from "../../components/like-section";
+import CommentBox from "../../components/comment-box";
 
 interface ArticlePageProps {
   params: {
@@ -46,7 +47,7 @@ const ArticlePage: React.FC<ArticlePageProps> = async ({ params }) => {
       },
     },
     orderBy: { createdAt: "desc" },
-    select: { id: true, title: true, image: true },
+    include: { category: {select: {slug: true}}},
     take: 10,
   });
 
@@ -139,6 +140,8 @@ const ArticlePage: React.FC<ArticlePageProps> = async ({ params }) => {
         </div>
 
         <Separator className="my-4" />
+
+        <CommentBox/>
       </div>
       <div className="md:col-span-1 bg-slate-50 min-h-[100vh]">
         <div className="flex bg-slate-700 px-3 pt-1">
